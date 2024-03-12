@@ -23,7 +23,7 @@ namespace BusinessObject.Models
         public virtual DbSet<Order> Orders { get; set; } = null!;
         public virtual DbSet<OrderService> OrderServices { get; set; } = null!;
         public virtual DbSet<Service> Services { get; set; } = null!;
-        public virtual DbSet<Startu> Startus { get; set; } = null!;
+        public virtual DbSet<Status> Statuses { get; set; } = null!;
         public virtual DbSet<Task> Tasks { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
         public virtual DbSet<UserTask> UserTasks { get; set; } = null!;
@@ -47,12 +47,13 @@ namespace BusinessObject.Models
 
             return strConn;
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Category>(entity =>
             {
                 entity.HasKey(e => e.CategoriesId)
-                    .HasName("PK__Category__92BEE78A543C8CAB");
+                    .HasName("PK__Category__92BEE78A87A3F731");
 
                 entity.ToTable("Category");
 
@@ -67,7 +68,7 @@ namespace BusinessObject.Models
             modelBuilder.Entity<Feedback>(entity =>
             {
                 entity.HasKey(e => e.FbId)
-                    .HasName("PK__Feedback__A81DB82D3F885C1D");
+                    .HasName("PK__Feedback__A81DB82D4702C7DC");
 
                 entity.ToTable("Feedback");
 
@@ -141,11 +142,11 @@ namespace BusinessObject.Models
                     .HasColumnType("date")
                     .HasColumnName("start_time");
 
-                entity.Property(e => e.StartusId).HasColumnName("startus_id");
-
                 entity.Property(e => e.Status)
                     .IsUnicode(false)
                     .HasColumnName("status");
+
+                entity.Property(e => e.StatusId).HasColumnName("status_id");
 
                 entity.Property(e => e.TotalFees).HasColumnName("total_fees");
 
@@ -153,9 +154,9 @@ namespace BusinessObject.Models
 
                 entity.Property(e => e.VoucherId).HasColumnName("voucher_id");
 
-                entity.HasOne(d => d.Startus)
+                entity.HasOne(d => d.StatusNavigation)
                     .WithMany(p => p.Orders)
-                    .HasForeignKey(d => d.StartusId)
+                    .HasForeignKey(d => d.StatusId)
                     .HasConstraintName("FK_Order_Status");
 
                 entity.HasOne(d => d.User)
@@ -204,17 +205,16 @@ namespace BusinessObject.Models
                     .HasColumnName("service_name");
             });
 
-            modelBuilder.Entity<Startu>(entity =>
+            modelBuilder.Entity<Status>(entity =>
             {
-                entity.HasKey(e => e.StartusId)
-                    .HasName("PK__Startus__486A19617B865B2E");
+                entity.ToTable("Status");
 
-                entity.Property(e => e.StartusId).HasColumnName("startus_id");
+                entity.Property(e => e.StatusId).HasColumnName("status_id");
 
-                entity.Property(e => e.StartusName)
+                entity.Property(e => e.StatusName)
                     .HasMaxLength(50)
                     .IsUnicode(false)
-                    .HasColumnName("startus_name");
+                    .HasColumnName("status_name");
             });
 
             modelBuilder.Entity<Task>(entity =>
@@ -265,11 +265,11 @@ namespace BusinessObject.Models
                     .IsUnicode(false)
                     .HasColumnName("role");
 
-                entity.Property(e => e.StartusId).HasColumnName("startus_id");
+                entity.Property(e => e.StatusId).HasColumnName("status_id");
 
-                entity.HasOne(d => d.Startus)
+                entity.HasOne(d => d.Status)
                     .WithMany(p => p.Users)
-                    .HasForeignKey(d => d.StartusId)
+                    .HasForeignKey(d => d.StatusId)
                     .HasConstraintName("FK_User_Status");
             });
 

@@ -19,9 +19,9 @@ namespace BusinessObject.Models
         public string? Phone { get; set; }
         public DateTime? DoB { get; set; }
         public string? Role { get; set; }
-        public long? StartusId { get; set; }
+        public long? StatusId { get; set; }
 
-        public virtual Startu? Startus { get; set; }
+        public virtual Status? Status { get; set; }
         public virtual ICollection<Feedback> Feedbacks { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
         public virtual ICollection<UserTask> UserTasks { get; set; }
