@@ -1,12 +1,14 @@
-﻿using System;
+﻿using BusinessObject.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DataAccessObject
 {
-    public class UserDAO
+    public class UserDAO : BaseDAO<User>
     {
         private static UserDAO instance = null;
         private static object lockObject = new object();

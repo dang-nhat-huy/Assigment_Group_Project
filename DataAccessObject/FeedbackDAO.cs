@@ -1,12 +1,14 @@
-﻿using System;
+﻿using BusinessObject.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DataAccessObject
 {
-    public class FeedbackDAO
+    public class FeedbackDAO : BaseDAO<Feedback>
     {
         private static FeedbackDAO instance = null;
         private static object lockObject = new object();
