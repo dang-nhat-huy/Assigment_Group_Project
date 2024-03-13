@@ -21,7 +21,9 @@ namespace BusinessObject.Models
         public virtual DbSet<Feedback> Feedbacks { get; set; } = null!;
         public virtual DbSet<Menu> Menus { get; set; } = null!;
         public virtual DbSet<Order> Orders { get; set; } = null!;
-        public virtual DbSet<OrderService> OrderServices { get; set; } = null!;
+        public virtual DbSet<OrderDetail> OrderDetails { get; set; } = null!;
+        public virtual DbSet<OrderDetailMenu> OrderDetailMenus { get; set; } = null!;
+        public virtual DbSet<OrderDetailService> OrderDetailServices { get; set; } = null!;
         public virtual DbSet<Service> Services { get; set; } = null!;
         public virtual DbSet<Status> Statuses { get; set; } = null!;
         public virtual DbSet<Task> Tasks { get; set; } = null!;
@@ -36,7 +38,6 @@ namespace BusinessObject.Models
                 optionsBuilder.UseSqlServer(GetConnectionString());
             }
         }
-
         private string GetConnectionString()
         {
             IConfiguration config = new ConfigurationBuilder()
@@ -53,7 +54,7 @@ namespace BusinessObject.Models
             modelBuilder.Entity<Category>(entity =>
             {
                 entity.HasKey(e => e.CategoriesId)
-                    .HasName("PK__Category__92BEE78A87A3F731");
+                    .HasName("PK__Category__92BEE78AF052D098");
 
                 entity.ToTable("Category");
 
@@ -68,7 +69,7 @@ namespace BusinessObject.Models
             modelBuilder.Entity<Feedback>(entity =>
             {
                 entity.HasKey(e => e.FbId)
-                    .HasName("PK__Feedback__A81DB82D4702C7DC");
+                    .HasName("PK__Feedback__A81DB82D2BF58359");
 
                 entity.ToTable("Feedback");
 
@@ -100,19 +101,12 @@ namespace BusinessObject.Models
                     .IsUnicode(false)
                     .HasColumnName("menu_item");
 
-                entity.Property(e => e.OrderId).HasColumnName("order_id");
-
                 entity.Property(e => e.Price).HasColumnName("price");
 
                 entity.HasOne(d => d.Categories)
                     .WithMany(p => p.Menus)
                     .HasForeignKey(d => d.CategoriesId)
-                    .HasConstraintName("FK_Menu_Categories");
-
-                entity.HasOne(d => d.Order)
-                    .WithMany(p => p.Menus)
-                    .HasForeignKey(d => d.OrderId)
-                    .HasConstraintName("FK_Menu_Order");
+                    .HasConstraintName("FK_Menu_Category");
             });
 
             modelBuilder.Entity<Order>(entity =>
@@ -121,30 +115,13 @@ namespace BusinessObject.Models
 
                 entity.Property(e => e.OrderId).HasColumnName("order_id");
 
-                entity.Property(e => e.Comission)
-                    .IsUnicode(false)
-                    .HasColumnName("comission");
-
                 entity.Property(e => e.EndTime)
                     .HasColumnType("date")
                     .HasColumnName("end_time");
 
-                entity.Property(e => e.Note)
-                    .HasMaxLength(255)
-                    .IsUnicode(false)
-                    .HasColumnName("note");
-
-                entity.Property(e => e.Room)
-                    .IsUnicode(false)
-                    .HasColumnName("room");
-
                 entity.Property(e => e.StartTime)
                     .HasColumnType("date")
                     .HasColumnName("start_time");
-
-                entity.Property(e => e.Status)
-                    .IsUnicode(false)
-                    .HasColumnName("status");
 
                 entity.Property(e => e.StatusId).HasColumnName("status_id");
 
@@ -154,7 +131,7 @@ namespace BusinessObject.Models
 
                 entity.Property(e => e.VoucherId).HasColumnName("voucher_id");
 
-                entity.HasOne(d => d.StatusNavigation)
+                entity.HasOne(d => d.Status)
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.StatusId)
                     .HasConstraintName("FK_Order_Status");
@@ -170,25 +147,75 @@ namespace BusinessObject.Models
                     .HasConstraintName("FK_Order_Voucher");
             });
 
-            modelBuilder.Entity<OrderService>(entity =>
+            modelBuilder.Entity<OrderDetail>(entity =>
             {
-                entity.ToTable("Order_Service");
+                entity.ToTable("OrderDetail");
 
-                entity.Property(e => e.OrderServiceId).HasColumnName("order_service_id");
+                entity.Property(e => e.OrderDetailId).HasColumnName("order_detail_id");
+
+                entity.Property(e => e.Comission)
+                    .IsUnicode(false)
+                    .HasColumnName("comission");
+
+                entity.Property(e => e.Note)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("note");
 
                 entity.Property(e => e.OrderId).HasColumnName("order_id");
 
-                entity.Property(e => e.ServiceId).HasColumnName("service_id");
+                entity.Property(e => e.Room)
+                    .IsUnicode(false)
+                    .HasColumnName("room");
 
                 entity.HasOne(d => d.Order)
-                    .WithMany(p => p.OrderServices)
+                    .WithMany(p => p.OrderDetails)
                     .HasForeignKey(d => d.OrderId)
-                    .HasConstraintName("FK_OrderService_Order");
+                    .HasConstraintName("FK_OrderDetail_Order");
+            });
+
+            modelBuilder.Entity<OrderDetailMenu>(entity =>
+            {
+                entity.ToTable("OrderDetail_Menu");
+
+                entity.Property(e => e.OrderDetailMenuId).HasColumnName("order_detail_menu_id");
+
+                entity.Property(e => e.MenuId).HasColumnName("menu_id");
+
+                entity.Property(e => e.OrderDetailId).HasColumnName("order_detail_id");
+
+                entity.HasOne(d => d.Menu)
+                    .WithMany(p => p.OrderDetailMenus)
+                    .HasForeignKey(d => d.MenuId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_OrderDetailMenu_Menu");
+
+                entity.HasOne(d => d.OrderDetail)
+                    .WithMany(p => p.OrderDetailMenus)
+                    .HasForeignKey(d => d.OrderDetailId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_OrderDetailMenu_OrderDetail");
+            });
+
+            modelBuilder.Entity<OrderDetailService>(entity =>
+            {
+                entity.ToTable("Order_Detail_Services");
+
+                entity.Property(e => e.OrderDetailServiceId).HasColumnName("order_detail_service_id");
+
+                entity.Property(e => e.OrderDetailId).HasColumnName("order_detail_id");
+
+                entity.Property(e => e.ServiceId).HasColumnName("service_id");
+
+                entity.HasOne(d => d.OrderDetail)
+                    .WithMany(p => p.OrderDetailServices)
+                    .HasForeignKey(d => d.OrderDetailId)
+                    .HasConstraintName("FK_OrderDetailService_OrderDetail");
 
                 entity.HasOne(d => d.Service)
-                    .WithMany(p => p.OrderServices)
+                    .WithMany(p => p.OrderDetailServices)
                     .HasForeignKey(d => d.ServiceId)
-                    .HasConstraintName("FK_OrderService_Service");
+                    .HasConstraintName("FK_OrderDetailService_Service");
             });
 
             modelBuilder.Entity<Service>(entity =>
@@ -286,12 +313,12 @@ namespace BusinessObject.Models
                 entity.HasOne(d => d.Task)
                     .WithMany(p => p.UserTasks)
                     .HasForeignKey(d => d.TaskId)
-                    .HasConstraintName("FK_UserTask_Task");
+                    .HasConstraintName("FK_User_Task_Task");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.UserTasks)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK_UserTask_User");
+                    .HasConstraintName("FK_User_Task_User");
             });
 
             modelBuilder.Entity<Voucher>(entity =>

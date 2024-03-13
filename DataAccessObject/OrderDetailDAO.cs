@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace DataAccessObject
 {
-    public class OrderServiceDAO : BaseDAO<OrderService>
+    public class OrderDetailDAO : BaseDAO<OrderDetail>
     {
-        private static OrderServiceDAO instance = null;
+        private static OrderDetailDAO instance = null;
         private static object lockObject = new object();
-        public OrderServiceDAO() { }
-        public static OrderServiceDAO Instance
+        public OrderDetailDAO() { }
+        public static OrderDetailDAO Instance
         {
             get
             {
@@ -20,7 +20,7 @@ namespace DataAccessObject
                 {
                     if (instance == null)
                     {
-                        instance = new OrderServiceDAO();
+                        instance = new OrderDetailDAO();
                     }
                     return instance;
                 }

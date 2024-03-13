@@ -13,9 +13,9 @@ namespace Repository.IRepository
         IEnumerable<Feedback> GetAllWithInclude(string field);
         IEnumerable<Feedback> GetAllWith2Include(string field1, string field2);
         Feedback? GetById(long id);
-        void Add(Feedback Feedback);
-        void Update(Feedback Feedback);
-        void Delete(Feedback Feedback);
+        void Add(Feedback feedback);
+        void Update(Feedback feedback);
+        void Delete(Feedback feedback);
         void Save();
     }
 }
