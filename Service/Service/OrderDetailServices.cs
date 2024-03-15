@@ -9,30 +9,30 @@ using System.Threading.Tasks;
 
 namespace Service.Service
 {
-    public class FeedbackService : IFeedbackService
+    public class OrderDetailServices : IOrderDetailServices
     {
-        private readonly IFeedbackRepository _feedbackRepository;
-        public FeedbackService(IFeedbackRepository feedbackRepository)
+        private readonly IOrderDetailRepository _orderDetailRepository;
+        public OrderDetailServices(IOrderDetailRepository orderDetailRepository)
         {
-            _feedbackRepository = feedbackRepository;
+            _orderDetailRepository = orderDetailRepository;
         }
 
-        public void Add(Feedback feedback)
+        public void Add(OrderDetail orderDetail)
         {
-            _feedbackRepository.Add(feedback);
+            _orderDetailRepository.Add(orderDetail);
         }
 
-        public void Delete(Feedback feedback)
+        public void Delete(OrderDetail orderDetail)
         {
-            _feedbackRepository.Delete(feedback);
+            _orderDetailRepository.Delete(orderDetail);
         }
 
-        public IEnumerable<Feedback> GetAll()
+        public IEnumerable<OrderDetail> GetAll()
         {
-            return _feedbackRepository.GetAll();
+            return _orderDetailRepository.GetAll();
         }
 
-        public IEnumerable<Feedback> GetAll(int? page, int? quantity)
+        public IEnumerable<OrderDetail> GetAll(int? page, int? quantity)
         {
             const int defaultPage = 1;
             const int defaultQuantity = 10;
@@ -47,24 +47,24 @@ namespace Service.Service
             }
 
             int skip = (page.GetValueOrDefault(defaultPage) - 1) * quantity.GetValueOrDefault(defaultQuantity);
-            return _feedbackRepository.GetAll()
+            return _orderDetailRepository.GetAll()
                 .Skip(skip)
                 .Take((int)quantity!);
         }
 
-        public Feedback? GetById(long id)
+        public OrderDetail? GetById(long id)
         {
-            return _feedbackRepository.GetById(id);
+            return _orderDetailRepository.GetById(id);
         }
 
         public void Save()
         {
-            _feedbackRepository.Save();
+            _orderDetailRepository.Save();
         }
 
-        public void Update(Feedback feedback)
+        public void Update(OrderDetail orderDetail)
         {
-            _feedbackRepository.Update(feedback);
+            _orderDetailRepository.Update(orderDetail);
         }
     }
 }

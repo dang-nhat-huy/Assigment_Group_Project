@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BusinessObject.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,10 @@ namespace Service.IService
 {
     public interface IUserService
     {
+        public IEnumerable<User> GetAll();
+
+        public IEnumerable<User> GetAll(int? page, int? quantity);
+
+        public User? GetById(long id);
     }
 }
