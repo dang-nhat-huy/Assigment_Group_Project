@@ -56,8 +56,16 @@ namespace Assigment_Group_Project
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            #region DI_Repository
             builder.Services.AddScoped<IMenuRepository, MenuRepository>();
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+            #endregion
+
+            #region DI_Service
             builder.Services.AddScoped<IMenuService, MenuService>();
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
+            #endregion
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
             {
