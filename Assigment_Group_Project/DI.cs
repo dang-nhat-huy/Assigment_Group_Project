@@ -30,6 +30,7 @@ namespace Assigment_Group_Project
             services.AddSwaggerGen();
             services.AddHealthChecks();
             services.AddHttpContextAccessor();
+            services.AddAutoMapper(typeof(Program));
             //services.AddScoped<IClaimsServices, ClaimsServices>();
             //Adding Session
             services.AddDistributedMemoryCache(); //Adding cache in memory for session.
@@ -37,27 +38,37 @@ namespace Assigment_Group_Project
             //services.AddTransient<ISessionServices, SessionServices>();
             services.AddAuthorization();
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateIssuerSigningKey = true,
-            ValidateLifetime = true,
-            RoleClaimType = ClaimTypes.Role,
-            ValidAudience = builder.Configuration["JWT:Audience"],
-            ValidIssuer = builder.Configuration["JWT:Issuer"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding
-                .UTF8.GetBytes(builder.Configuration["JWT:Key"]))
-        };
-    });
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidateLifetime = true,
+                        RoleClaimType = ClaimTypes.Role,
+                        ValidAudience = builder.Configuration["JWT:Audience"],
+                        ValidIssuer = builder.Configuration["JWT:Issuer"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding
+                            .UTF8.GetBytes(builder.Configuration["JWT:Key"]))
+                    };
+                });
             // Add services to the container.
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            #region DI_Repository
             builder.Services.AddScoped<IMenuRepository, MenuRepository>();
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+            builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+            #endregion
+
+            #region DI_Service
             builder.Services.AddScoped<IMenuService, MenuService>();
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
+            builder.Services.AddScoped<ITaskService, TaskService>();
+            #endregion
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
             {

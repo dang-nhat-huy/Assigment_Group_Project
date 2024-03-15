@@ -6,7 +6,7 @@ namespace Assigment_Group_Project.Mapper
     {
         partial void AddUserMapperConfig()
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

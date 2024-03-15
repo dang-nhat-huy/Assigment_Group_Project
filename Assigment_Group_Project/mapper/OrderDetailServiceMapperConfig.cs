@@ -6,7 +6,7 @@ namespace Assigment_Group_Project.Mapper
     {
         partial void AddOrderDetailServiceMapperConfig()
         {
-            throw new NotImplementedException();
+            
         }
 
     }

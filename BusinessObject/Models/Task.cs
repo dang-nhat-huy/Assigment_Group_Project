@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace BusinessObject.Models
 {
@@ -11,9 +13,12 @@ namespace BusinessObject.Models
         }
 
         public long TaskId { get; set; }
+        [Required]
         public string? TaskName { get; set; }
+        [Required]
         public string? TaskDetail { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<UserTask> UserTasks { get; set; }
     }
 }
