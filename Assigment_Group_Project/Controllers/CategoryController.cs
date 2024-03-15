@@ -13,7 +13,7 @@ namespace Assigment_Group_Project.Controllers
         {
             _categoryService = categoryService;
         }
-        [HttpGet("GetAll")]
+        [HttpGet("GetAll", Name = "Get All Categories")]
         public IActionResult GetAllCategories(int? page = 1, int? quantity = 10)
         {
             try
@@ -30,7 +30,7 @@ namespace Assigment_Group_Project.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpGet("Get/{id}")]
+        [HttpGet("Get/{id}", Name = "Get Category By ID")]
         public IActionResult GetCategoryById([FromRoute] long id)
         {
             try
@@ -47,7 +47,7 @@ namespace Assigment_Group_Project.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPost("Add")]
+        [HttpPost("Add", Name = "Add New Category")]
         public IActionResult AddCategory(string name)
         {
             try
@@ -79,7 +79,7 @@ namespace Assigment_Group_Project.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPatch("Update/{id}")]
+        [HttpPatch("Update/{id}", Name = "Update Existing Category")]
         public IActionResult UpdateCategory([FromRoute] long id, string name)
         {
             try
@@ -123,7 +123,7 @@ namespace Assigment_Group_Project.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpDelete("Delete/{id}")]
+        [HttpDelete("Delete/{id}", Name = "Delete Category")]
         public IActionResult DeleteCategory([FromRoute] long id)
         {
             try

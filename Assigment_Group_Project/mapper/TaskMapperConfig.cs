@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using Assigment_Group_Project.ViewModel;
+using AutoMapper;
+using Task = BusinessObject.Models.Task;
 
 namespace Assigment_Group_Project.Mapper
 {
@@ -6,7 +8,9 @@ namespace Assigment_Group_Project.Mapper
     {
         partial void AddTaskMapperConfig()
         {
-            throw new NotImplementedException();
+            CreateMap<Task, TaskRequestVM>();
+            CreateMap<TaskRequestVM, Task>()
+                .ForMember(dest => dest.UserTasks, opt => opt.Ignore());
         }
     }
 }
