@@ -4,6 +4,10 @@ using System.Text.Json.Serialization;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using System.Security.Claims;
+using Repository;
+using Repository.IRepository;
+using Service.IService;
+using Service.Service;
 
 namespace Assigment_Group_Project
 {
@@ -52,6 +56,8 @@ namespace Assigment_Group_Project
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            builder.Services.AddScoped<IMenuRepository, MenuRepository>();
+            builder.Services.AddScoped<IMenuService, MenuService>();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
             {
