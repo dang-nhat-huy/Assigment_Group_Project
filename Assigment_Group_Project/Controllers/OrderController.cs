@@ -100,7 +100,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpPatch("ChangeStatus/{id}", Name = "Change Order Status")]
-        public IActionResult ChangeStatus([FromRoute] long id)
+        public IActionResult ChangeStatus([FromRoute] long id, long statusId)
         {
             try
             {
@@ -109,21 +109,12 @@ namespace Assigment_Group_Project.Controllers
                     return NotFound();
                 }
 
-                switch (order.StatusId)
+                if(statusId <= 0 || statusId >= 4)
                 {
-                    case 1:
-                        order.StatusId = 2;
-                        break;
-                    case 2:
-                        order.StatusId = 3;
-                        break;
-                    case 3:
-                        order.StatusId = 3;
-                        break;
-                    default:
-                        order.StatusId = 3;
-                        break;
+                    statusId = 3;
                 }
+
+                order.StatusId = statusId;
                 _orderService.Update(order);
                 _orderService.Save();
 
