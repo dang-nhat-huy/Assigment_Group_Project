@@ -15,9 +15,9 @@ namespace Assigment_Group_Project.Controllers
             _menuService = menuService;
         }
 
-        [HttpGet("GetById")]
+        [HttpGet("GetById/{id}", Name = "Get Menu Item By ID")]
         //[Authorize(Roles = "Admin,Staff,Customer")]
-        public IActionResult GetProductById(int id)
+        public IActionResult GetMenuItemById(int id)
         {
             try
             {
@@ -37,11 +37,11 @@ namespace Assigment_Group_Project.Controllers
         [EnableQuery(PageSize = 10)]
         [HttpGet("GetAll")]
         //[Authorize(Roles = "Admin,Staff,Customer")]
-        public IActionResult GetAllProducts()
+        public IActionResult GetAllMenuItems(int? page = 1, int? quantity = 10)
         {
             try
             {
-                var list = _menuService.GetAllWithInclude().AsQueryable();
+                var list = _menuService.GetAll(page,quantity);
                 if (!list.Any())
                 {
                     return NotFound("There's No Data");
@@ -56,7 +56,7 @@ namespace Assigment_Group_Project.Controllers
 
         //[HttpPost("Add")]
         //[Authorize(Roles = "Staff")]
-        //public IActionResult Add(AddProductRequestVM request)
+        //public IActionResult Add(AddMenuItemRequestVM request)
         //{
         //    try
         //    {
@@ -64,15 +64,15 @@ namespace Assigment_Group_Project.Controllers
         //        {
         //            return BadRequest("Invalid Input");
         //        }
-        //        var existProduct = _productService.GetAll().Where(x => x.ProductName!.Equals(request.ProductName));
-        //        if (existProduct.Any())
+        //        var existMenuItem = _productService.GetAll().Where(x => x.MenuItemName!.Equals(request.MenuItemName));
+        //        if (existMenuItem.Any())
         //        {
         //            return BadRequest("There's already product with the same name");
         //        }
 
-        //        Product newProduct = new Product
+        //        MenuItem newMenuItem = new MenuItem
         //        {
-        //            ProductName = request.ProductName,
+        //            MenuItemName = request.MenuItemName,
         //            Amount = request.Amount,
         //            Description = request.Description,
         //            Price = request.Price,
@@ -80,7 +80,7 @@ namespace Assigment_Group_Project.Controllers
         //            Version = request.Version,
         //            StatusId = 1,
         //        };
-        //        _productService.Add(newProduct);
+        //        _productService.Add(newMenuItem);
         //        _productService.Save();
 
         //        return Ok("Add Successfully");

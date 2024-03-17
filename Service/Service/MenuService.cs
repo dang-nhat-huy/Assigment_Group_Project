@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using Repository;
 using Repository.IRepository;
 using Service.IService;
 using System;
@@ -11,45 +12,64 @@ namespace Service.Service
 {
     public class MenuService : IMenuService
     {
-        private readonly IMenuRepository _productRepository;
-        public MenuService(IMenuRepository productRepository)
+        private readonly IMenuRepository _menuRepository;
+        public MenuService(IMenuRepository menuRepository)
         {
-            _productRepository = productRepository;
+            _menuRepository = menuRepository;
         }
 
-        public void Add(Menu product)
+        public void Add(Menu menu)
         {
-            _productRepository.Add(product);
+            _menuRepository.Add(menu);
         }
 
-        public void Delete(Menu product)
+        public void Delete(Menu menu)
         {
-            _productRepository.Delete(product);
+            _menuRepository.Delete(menu);
         }    
 
         public IEnumerable<Menu> GetAll()
         {
-            return _productRepository.GetAll();
+            return _menuRepository.GetAll();
         }
 
         public IEnumerable<Menu> GetAllWithInclude()
         {            
-            return _productRepository.GetAllWithInclude("Categories").ToList();
+            return _menuRepository.GetAllWithInclude("Categories").ToList();
         }
 
         public Menu? GetById(long id)
         {
-            return _productRepository.GetAllWithInclude("Categories").FirstOrDefault(x => x.MenuId == id);
+            return _menuRepository.GetAllWithInclude("Categories").FirstOrDefault(x => x.MenuId == id);
         }
 
+        public IEnumerable<Menu> GetAll(int? page, int? quantity)
+        {
+            const int defaultPage = 1;
+            const int defaultQuantity = 10;
+
+            if (page.HasValue && page <= 0)
+            {
+                page = defaultPage;
+            }
+            if (quantity.HasValue && (quantity <= 0 || quantity > int.MaxValue))
+            {
+                quantity = defaultQuantity;
+            }
+
+            int skip = (page.GetValueOrDefault(defaultPage) - 1) * quantity.GetValueOrDefault(defaultQuantity);
+            return _menuRepository.GetAllWithInclude("Categories").ToList()
+                .Skip(skip)
+                .Take((int)quantity!);
+        }
         public void Save()
         {
-            _productRepository.Save();
+            _menuRepository.Save();
         }
 
-        public void Update(Menu product)
+        public void Update(Menu menu)
         {
-            _productRepository.Update(product);
+            _menuRepository.Update(menu);
         }
     }
 }
