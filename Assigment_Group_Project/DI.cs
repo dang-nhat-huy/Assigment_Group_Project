@@ -61,6 +61,7 @@ namespace Assigment_Group_Project
             builder.Services.AddScoped<IMenuRepository, MenuRepository>();
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
             builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+            builder.Services.AddScoped<IOrderRepository, OrderRepository>();
             builder.Services.AddScoped<IVoucherRepository, VoucherRepository>();
             #endregion
 
@@ -68,6 +69,7 @@ namespace Assigment_Group_Project
             builder.Services.AddScoped<IMenuService, MenuService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<ITaskService, TaskService>();
+            builder.Services.AddScoped<IOrderService, OrderService>();
             builder.Services.AddScoped<IVoucherService, VoucherService>();
             #endregion
 
