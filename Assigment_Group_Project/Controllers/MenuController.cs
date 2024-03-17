@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Service.IService;
+using Service.Service;
 
 namespace Assigment_Group_Project.Controllers
 {
@@ -15,9 +16,9 @@ namespace Assigment_Group_Project.Controllers
             _menuService = menuService;
         }
 
-        [HttpGet("GetById")]
+        [HttpGet("GetById/{id}", Name = "Get Menu Item By ID")]
         //[Authorize(Roles = "Admin,Staff,Customer")]
-        public IActionResult GetProductById(int id)
+        public IActionResult GetMenuItemById(int id)
         {
             try
             {
@@ -37,11 +38,11 @@ namespace Assigment_Group_Project.Controllers
         [EnableQuery(PageSize = 10)]
         [HttpGet("GetAll")]
         //[Authorize(Roles = "Admin,Staff,Customer")]
-        public IActionResult GetAllProducts()
+        public IActionResult GetAllMenuItems(int? page = 1, int? quantity = 10)
         {
             try
             {
-                var list = _menuService.GetAllWithInclude().AsQueryable();
+                var list = _menuService.GetAll(page,quantity);
                 if (!list.Any())
                 {
                     return NotFound("There's No Data");
@@ -54,9 +55,77 @@ namespace Assigment_Group_Project.Controllers
             }
         }
 
+        [HttpDelete("Delete/{id}", Name = "Delete Menu Item")]
+        public IActionResult DeleteMenuItem([FromRoute] long id)
+        {
+            try
+            {
+                var deleteMenuItem = _menuService.GetById(id);
+                if (deleteMenuItem == null)
+                {
+                    return NotFound();
+                }
+
+                _menuService.Delete(deleteMenuItem);
+                _menuService.Save();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPatch("Update/{id}", Name = "Update Existing Menu Item")]
+        public IActionResult UpdateMenuItem([FromRoute] long id, string name, float price, string  categoryName)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(name))
+                {
+                    return BadRequest();
+                }
+                if (name != null && name.Trim().Length > 50)
+                {
+                    return BadRequest();
+                }
+
+                //Get Item need to Update
+                var updateMenuItem = _menuService.GetById(id);
+                if (updateMenuItem == null)
+                {
+                    return NotFound();
+                }
+
+                if (updateMenuItem.Equals(name))
+                {
+                    return BadRequest();
+                }
+                else
+                {
+                    //Check if any item with name exist or not
+                    var existMenuItem = _menuService.GetAll().Where(x => x.MenuItem!.Equals(name));
+                    if (existMenuItem.Any())
+                    {
+                        return BadRequest();
+                    }
+                }
+
+                updateMenuItem.MenuItem = name;
+                _menuService.Update(updateMenuItem);
+                _menuService.Save();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
         //[HttpPost("Add")]
         //[Authorize(Roles = "Staff")]
-        //public IActionResult Add(AddProductRequestVM request)
+        //public IActionResult Add(AddMenuItemRequestVM request)
         //{
         //    try
         //    {
@@ -64,15 +133,15 @@ namespace Assigment_Group_Project.Controllers
         //        {
         //            return BadRequest("Invalid Input");
         //        }
-        //        var existProduct = _productService.GetAll().Where(x => x.ProductName!.Equals(request.ProductName));
-        //        if (existProduct.Any())
+        //        var existMenuItem = _productService.GetAll().Where(x => x.MenuItemName!.Equals(request.MenuItemName));
+        //        if (existMenuItem.Any())
         //        {
         //            return BadRequest("There's already product with the same name");
         //        }
 
-        //        Product newProduct = new Product
+        //        MenuItem newMenuItem = new MenuItem
         //        {
-        //            ProductName = request.ProductName,
+        //            MenuItemName = request.MenuItemName,
         //            Amount = request.Amount,
         //            Description = request.Description,
         //            Price = request.Price,
@@ -80,7 +149,7 @@ namespace Assigment_Group_Project.Controllers
         //            Version = request.Version,
         //            StatusId = 1,
         //        };
-        //        _productService.Add(newProduct);
+        //        _productService.Add(newMenuItem);
         //        _productService.Save();
 
         //        return Ok("Add Successfully");

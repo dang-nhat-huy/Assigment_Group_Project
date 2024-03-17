@@ -15,6 +15,8 @@ namespace Service.IService
 
         public IEnumerable<Menu> GetAll();
 
+        public IEnumerable<Menu> GetAll(int? page, int? quantity);
+
         public Menu? GetById(long id);
 
         public void Save();

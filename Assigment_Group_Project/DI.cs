@@ -62,6 +62,7 @@ namespace Assigment_Group_Project
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
             builder.Services.AddScoped<ITaskRepository, TaskRepository>();
             builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+            builder.Services.AddScoped<IVoucherRepository, VoucherRepository>();
             #endregion
 
             #region DI_Service
@@ -69,6 +70,7 @@ namespace Assigment_Group_Project
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<ITaskService, TaskService>();
             builder.Services.AddScoped<IOrderService, OrderService>();
+            builder.Services.AddScoped<IVoucherService, VoucherService>();
             #endregion
 
             builder.Services.AddEndpointsApiExplorer();
