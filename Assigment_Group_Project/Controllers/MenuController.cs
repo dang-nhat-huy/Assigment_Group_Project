@@ -56,6 +56,26 @@ namespace Assigment_Group_Project.Controllers
             }
         }
 
+        [EnableQuery(PageSize = 10)]
+        [HttpGet("SearchByName/{name}", Name = "Search By Menu Item Name")]
+        //[Authorize(Roles = "Admin,Staff,Customer")]
+        public IActionResult SearMenuItems(string name)
+        {
+            try
+            {
+                var checkExist = _menuService.GetAllWithInclude().FirstOrDefault(x => x.MenuItem == name);
+                if (checkExist == null)
+                {
+                    return NotFound("Not Found");
+                }
+                return Ok(checkExist);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpDelete("Delete/{id}", Name = "Delete Menu Item")]
         public IActionResult DeleteMenuItem([FromRoute] long id)
         {
