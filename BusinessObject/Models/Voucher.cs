@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace BusinessObject.Models
 {
@@ -15,7 +16,7 @@ namespace BusinessObject.Models
         public string? Code { get; set; }
         public DateTime? ExpireDate { get; set; }
         public double? Discount { get; set; }
-
+        [JsonIgnore ]
         public virtual ICollection<Order> Orders { get; set; }
     }
 }

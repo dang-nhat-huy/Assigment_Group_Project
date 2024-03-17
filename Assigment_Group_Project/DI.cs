@@ -61,12 +61,14 @@ namespace Assigment_Group_Project
             builder.Services.AddScoped<IMenuRepository, MenuRepository>();
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
             builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+            builder.Services.AddScoped<IVoucherRepository, VoucherRepository>();
             #endregion
 
             #region DI_Service
             builder.Services.AddScoped<IMenuService, MenuService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<ITaskService, TaskService>();
+            builder.Services.AddScoped<IVoucherService, VoucherService>();
             #endregion
 
             builder.Services.AddEndpointsApiExplorer();
