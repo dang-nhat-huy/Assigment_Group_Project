@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using Assigment_Group_Project.ViewModel;
+using AutoMapper;
+using BusinessObject.Models;
 
 namespace Assigment_Group_Project.Mapper
 {
@@ -6,6 +8,9 @@ namespace Assigment_Group_Project.Mapper
     {
         partial void AddFeedBackMapperConfig()
         {
+            CreateMap<FeedbackRequestVM, Feedback>()
+                .ForMember(dest => dest.User, opt => opt.Ignore());
+            CreateMap<Feedback, FeedbackRequestVM>();
         }
     }
 }

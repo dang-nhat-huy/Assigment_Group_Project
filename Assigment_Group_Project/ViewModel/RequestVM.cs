@@ -22,4 +22,12 @@ namespace Assigment_Group_Project.ViewModel
         [Required]
         public long? UserId { get; set; }
     }
+    public class FeedbackRequestVM
+    {
+        [Required]
+        [MinLength(1)]
+        public string? FbContent { get; set; }
+        [Required]
+        public long? UserId { get; set; }
+    }
 }
