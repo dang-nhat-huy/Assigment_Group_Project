@@ -1,4 +1,6 @@
-﻿using BusinessObject.Models;
+﻿using Assigment_Group_Project.ViewModel;
+using AutoMapper;
+using BusinessObject.Models;
 using Microsoft.AspNetCore.Mvc;
 using Service.IService;
 
@@ -9,9 +11,12 @@ namespace Assigment_Group_Project.Controllers
     public class VoucherController : ControllerBase
     {
         private readonly IVoucherService _service;
-        public VoucherController(IVoucherService Voucherservice)
+        private readonly IMapper _mapper;
+
+        public VoucherController(IVoucherService Voucherservice, IMapper mapper)
         {
             _service = Voucherservice;
+            _mapper = mapper;
         }
         [HttpGet("GetAll", Name = "Get All Voucher")]
         public IActionResult GetAllVoucher(int? page = 1, int? quantity = 10)
@@ -19,11 +24,12 @@ namespace Assigment_Group_Project.Controllers
             try
             {
                 var list = _service.GetAll(page, quantity);
+                var ListVoucher = _mapper.Map<List<VoucherViewModel>>(list);
                 if (!list.Any())
                 {
                     return NotFound();
                 }
-                return Ok(list);
+                return Ok(ListVoucher);
             }
             catch (Exception ex)
             {
@@ -36,11 +42,12 @@ namespace Assigment_Group_Project.Controllers
             try
             {
                 var Voucher = _service.GetById(id);
+                var viewVoucher = _mapper.Map<VoucherViewModel>(Voucher);
                 if (Voucher == null)
                 {
                     return NotFound();
                 }
-                return Ok(Voucher);
+                return Ok(viewVoucher);
             }
             catch (Exception ex)
             {
@@ -48,8 +55,9 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpPost("Add", Name = "Add New Voucher")]
-        public IActionResult AddVoucher(Voucher voucher)
+        public IActionResult AddVoucher(VoucherViewModel Vvoucher)
         {
+            var voucher = _mapper.Map<Voucher>(Vvoucher);
             try
             {
                 if (!ModelState.IsValid)
@@ -60,50 +68,54 @@ namespace Assigment_Group_Project.Controllers
                 _service.Add(voucher);
                 _service.Save();
 
-                return Ok();
+                return Ok(_mapper.Map<VoucherViewModel>(voucher));
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
-        //[HttpPatch("Update/{id}", Name = "Update Existing Voucher")]
-        //public IActionResult UpdateVoucher([FromRoute] Voucher voucher)
-        //{
-        //    try
-        //    {
-        //        if (!ModelState.IsValid)
-        //        {
-        //            return BadRequest();
-        //        }
+        [HttpPatch("Update/{id}", Name = "Update Existing Voucher")]
+        public IActionResult UpdateVoucher([FromRoute] long id, VoucherViewModel voucherV)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest();
+                }
 
-        //        var existVoucher = _service.GetById(voucher.VoucherId);
-        //        if (existVoucher == null)
-        //        {
-        //            return NotFound();
-        //        }
-        //        //if (!existVoucher.VoucherId!.Equals(voucher.VoucherId))
-        //        //{
-        //        //    var existVoucher = _service.GetAll().Where(x => x.VoucherId!.Equals(voucher.VoucherId, StringComparison.OrdinalIgnoreCase));
-        //        //    if (existVoucher.Any())
-        //        //    {
-        //        //        return BadRequest();
-        //        //    }
-        //        //}
-        //        else
-        //        {
-        //            existVoucher = voucher;
-        //        }
-        //        _service.Update(existVoucher);
-        //        _service.Save();
+                var existVoucher = _service.GetById(id);
 
-        //        return Ok();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
+                if (existVoucher == null)
+                {
+                    return NotFound();
+                }
+                //if (!existVoucher.VoucherId!.Equals(voucher.VoucherId))
+                //{
+                //    var existVoucher = _service.GetAll().Where(x => x.VoucherId!.Equals(voucher.VoucherId, StringComparison.OrdinalIgnoreCase));
+                //    if (existVoucher.Any())
+                //    {
+                //        return BadRequest();
+                //    }
+                //}
+                else
+                {
+                    existVoucher.ExpireDate = voucherV.ExpireDate;
+                    existVoucher.Code = voucherV.Code;
+                    existVoucher.Note = voucherV.Note;
+                    existVoucher.Discount = voucherV.Discount;
+                }
+                _service.Update(existVoucher);
+                _service.Save();
+
+                return Ok(_mapper.Map<VoucherViewModel>(existVoucher));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
         [HttpDelete("Delete/{id}", Name = "Delete Voucher")]
         public IActionResult DeleteVoucher([FromRoute] long id)
         {
