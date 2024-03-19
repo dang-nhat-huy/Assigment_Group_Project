@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using Assigment_Group_Project.ViewModel;
+using AutoMapper;
+using BusinessObject.Models;
 
 namespace Assigment_Group_Project.Mapper
 {
@@ -6,7 +8,7 @@ namespace Assigment_Group_Project.Mapper
     {
         partial void AddVocuherMapperConfig()
         {
-            
+            CreateMap<Voucher, VoucherViewModel>().ReverseMap();
         }
     }
 }
