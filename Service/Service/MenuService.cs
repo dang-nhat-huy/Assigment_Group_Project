@@ -52,7 +52,7 @@ namespace Service.Service
             {
                 page = defaultPage;
             }
-            if (quantity.HasValue && (quantity <= 0 || quantity > int.MaxValue))
+            if (quantity.HasValue && (quantity <= 0))
             {
                 quantity = defaultQuantity;
             }

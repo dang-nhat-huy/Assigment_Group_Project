@@ -1,6 +1,8 @@
-﻿using BusinessObject.Models;
+﻿using Assigment_Group_Project.ViewModel;
+using BusinessObject.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.OData.Query;
 using Service.IService;
 using Service.Service;
@@ -19,7 +21,7 @@ namespace Assigment_Group_Project.Controllers
 
         [HttpGet("GetById/{id}", Name = "Get Menu Item By ID")]
         //[Authorize(Roles = "Admin,Staff,Customer")]
-        public IActionResult GetMenuItemById(int id)
+        public IActionResult GetMenuItemById([FromRoute] int id)
         {
             try
             {
@@ -35,8 +37,7 @@ namespace Assigment_Group_Project.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-        [EnableQuery(PageSize = 10)]
+       
         [HttpGet("GetAll")]
         //[Authorize(Roles = "Admin,Staff,Customer")]
         public IActionResult GetAllMenuItems(int? page = 1, int? quantity = 10)
@@ -55,15 +56,14 @@ namespace Assigment_Group_Project.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-        [EnableQuery(PageSize = 10)]
-        [HttpGet("SearchByName/{name}", Name = "Search By Menu Item Name")]
+        
+        [HttpGet("SearchByName/{productName}", Name = "Search By Menu Item Name")]
         //[Authorize(Roles = "Admin,Staff,Customer")]
-        public IActionResult SearMenuItems(string name)
+        public IActionResult SearchMenuItems([FromRoute]string productName, int? page = 1, int? quantity = 10)
         {
             try
             {
-                var checkExist = _menuService.GetAllWithInclude().FirstOrDefault(x => x.MenuItem == name);
+                var checkExist = _menuService.GetAll(page, quantity).Where(x => x.MenuItem.ToLower().Contains(productName.ToLower())).ToList();
                 if (checkExist == null)
                 {
                     return NotFound("Not Found");

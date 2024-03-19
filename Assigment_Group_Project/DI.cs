@@ -69,6 +69,7 @@ namespace Assigment_Group_Project
 
             #region DI_Service
             builder.Services.AddScoped<IMenuService, MenuService>();
+            builder.Services.AddScoped<IServicesService, ServicesService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<ITaskService, TaskService>();
             builder.Services.AddScoped<IOrderService, OrderService>();
