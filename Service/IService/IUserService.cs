@@ -14,5 +14,9 @@ namespace Service.IService
         public IEnumerable<User> GetAll(int? page, int? quantity);
 
         public User? GetById(long id);
+        void Add(User User);
+        void Update(User User);
+        void Delete(User User);
+        void Save();
     }
 }
