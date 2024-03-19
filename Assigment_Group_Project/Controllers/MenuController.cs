@@ -11,7 +11,7 @@ namespace Assigment_Group_Project.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class MenuController : ControllerBase 
+    public class MenuController : ControllerBase
     {
         private readonly IMenuService _menuService;
         public MenuController(IMenuService menuService)
@@ -37,14 +37,14 @@ namespace Assigment_Group_Project.Controllers
                 return BadRequest(ex.Message);
             }
         }
-       
+
         [HttpGet("GetAll")]
         //[Authorize(Roles = "Admin,Staff,Customer")]
         public IActionResult GetAllMenuItems(int? page = 1, int? quantity = 10)
         {
             try
             {
-                var list = _menuService.GetAll(page,quantity);
+                var list = _menuService.GetAll(page, quantity);
                 if (!list.Any())
                 {
                     return NotFound("There's No Data");
@@ -56,10 +56,10 @@ namespace Assigment_Group_Project.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        
+
         [HttpGet("SearchByName/{productName}", Name = "Search By Menu Item Name")]
         //[Authorize(Roles = "Admin,Staff,Customer")]
-        public IActionResult SearchMenuItems([FromRoute]string productName, int? page = 1, int? quantity = 10)
+        public IActionResult SearchMenuItems([FromRoute] string productName, int? page = 1, int? quantity = 10)
         {
             try
             {
@@ -128,12 +128,6 @@ namespace Assigment_Group_Project.Controllers
                 {
                     updateMenuItem.Price = price.Value;
                 }
-
-                // Update menuID if provided, otherwise keep the current menuID
-                if (menuID.HasValue)
-                {
-                    updateMenuItem.CategoriesId = menuID.Value;
-                }
                 else
                 {
                     //Check if any item with name exist or not
@@ -142,7 +136,7 @@ namespace Assigment_Group_Project.Controllers
                     {
                         return BadRequest();
                     }
-                    
+
                 }
                 updateMenuItem.MenuItem = name;
                 _menuService.Update(updateMenuItem);
@@ -161,6 +155,10 @@ namespace Assigment_Group_Project.Controllers
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest();
+                }
                 if (string.IsNullOrEmpty(name))
                 {
                     return BadRequest();
@@ -168,7 +166,7 @@ namespace Assigment_Group_Project.Controllers
                 if (name != null && name.Trim().Length > 50)
                 {
                     return BadRequest();
-                }               
+                }
 
                 var existMenu = _menuService.GetAll().Where(x => x.MenuItem!.Equals(name));
                 if (existMenu.Any())
@@ -176,9 +174,12 @@ namespace Assigment_Group_Project.Controllers
                     return BadRequest();
                 }
 
-                Menu newMenuItem = new Menu { MenuItem = name,
-                                        Price = price,
-                                            CategoriesId = categoryID};
+                Menu newMenuItem = new Menu
+                {
+                    MenuItem = name,
+                    Price = price,
+                    CategoriesId = categoryID
+                };
 
                 _menuService.Add(newMenuItem);
                 _menuService.Save();

@@ -1,5 +1,6 @@
 ﻿using BusinessObject.Models;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Assigment_Group_Project.ViewModel
 {
@@ -29,5 +30,14 @@ namespace Assigment_Group_Project.ViewModel
         public string? FbContent { get; set; }
         [Required]
         public long? UserId { get; set; }
+    }
+
+    public partial class ServiceRequestVM
+    {
+        [Required]
+        [MinLength(1), MaxLength(50)]
+        public string? ServiceName { get; set; }
+        [Range(1000, 100000000)]
+        public double? Fee { get; set; }
     }
 }
