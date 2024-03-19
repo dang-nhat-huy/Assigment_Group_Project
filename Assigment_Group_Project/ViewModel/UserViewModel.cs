@@ -8,9 +8,10 @@ namespace Assigment_Group_Project.ViewModel
         [EmailAddress]
         public string? Email { get; set; }
         [Required]
-        [MinLength(8)]
+        [MinLength(1)]
         public string? Password { get; set; }
         [Required]
+        [MinLength(1)]
         public string? ConfirmPassword { get; set; }
     }
     public class UserCreateByAdminVM
@@ -21,7 +22,7 @@ namespace Assigment_Group_Project.ViewModel
         [EmailAddress]
         public string? Email { get; set; }
         [Required]
-        [MinLength(8)]
+        [MinLength(1)]
         public string? Password { get; set; }
         [MinLength(8), MaxLength(20)]
         public string? Phone { get; set; }
@@ -38,7 +39,7 @@ namespace Assigment_Group_Project.ViewModel
         [EmailAddress]
         public string? Email { get; set; }
         [Required]
-        [MinLength(8)]
+        [MinLength(1)]
         public string? Password { get; set; }
         [MinLength(8), MaxLength(20)]
         public string? Phone { get; set; }

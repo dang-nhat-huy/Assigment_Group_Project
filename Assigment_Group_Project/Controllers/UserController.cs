@@ -65,12 +65,12 @@ namespace Assigment_Group_Project.Controllers
                 }
 
                 var existUser = _userService.GetAll().FirstOrDefault(x => x.Email!.Equals(user.Email));
-                if (existUser == null)
+                if (existUser != null)
                 {
                     return BadRequest();
                 }
 
-                User newUser = _mapper.Map<User>(existUser);
+                User newUser = _mapper.Map<User>(user);
                 newUser.Role = "Customer";
                 newUser.StatusId = 1;
                 _userService.Add(newUser);
@@ -118,11 +118,11 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpGet("SearchByEmail", Name = "Search Account By Email")]
-        public IActionResult SearchByEmail(string email)
-        {
+        public IActionResult SearchByEmail(string email, int? page = 1, int? quantity = 10) 
+        { 
             try
             {
-                var list = _userService.GetAll().Where(x => x.Email!.Contains(email));
+                var list = _userService.SearchByEmail(email, page, quantity);
                 if (!list.Any())
                 {
                     return NotFound();
@@ -170,6 +170,15 @@ namespace Assigment_Group_Project.Controllers
                 if (existUser == null)
                 {
                     return NotFound();
+                }
+
+                if (!existUser.Email!.Equals(user.Email))
+                {
+                    var existUserByEmail = _userService.GetAll().Where(x => x.Email!.Equals(user.Email, StringComparison.OrdinalIgnoreCase));
+                    if (!existUserByEmail.Any())
+                    {
+                        return BadRequest();
+                    }
                 }
 
                 existUser = _mapper.Map(user, existUser);
@@ -278,10 +287,7 @@ namespace Assigment_Group_Project.Controllers
 
             var claims = new List<Claim>
                 {
-                    new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new(JwtRegisteredClaimNames.Sub, user.Email!.Trim()),
-                    new(JwtRegisteredClaimNames.Email, user.Email!.Trim()),
-                    new("UserId", user.UserId.ToString()),
+                    new("userId", user.UserId.ToString()),
                     new(ClaimTypes.Name, user.Fullname ?? ""),
                     new(ClaimTypes.Role, user.Role!.Trim()),
                 };

@@ -65,6 +65,7 @@ namespace Assigment_Group_Project
             builder.Services.AddScoped<IVoucherRepository, VoucherRepository>();
             builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
             #endregion
 
             #region DI_Service

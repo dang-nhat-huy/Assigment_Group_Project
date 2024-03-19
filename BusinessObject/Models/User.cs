@@ -21,7 +21,7 @@ namespace BusinessObject.Models
         [EmailAddress]
         public string? Email { get; set; }
         [Required]
-        [MinLength(8)]
+        [MinLength(1)]
         public string? Password { get; set; }
         [MinLength(8), MaxLength(20)]
         public string? Phone { get; set; }

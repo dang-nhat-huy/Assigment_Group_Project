@@ -62,6 +62,27 @@ namespace Service.Service
             _userRepository.Save();
         }
 
+        public IEnumerable<User> SearchByEmail(string email, int? page, int? quantity)
+        {
+            const int defaultPage = 1;
+            const int defaultQuantity = 10;
+
+            if (page.HasValue && page <= 0)
+            {
+                page = defaultPage;
+            }
+            if (quantity.HasValue && (quantity <= 0 || quantity > int.MaxValue))
+            {
+                quantity = defaultQuantity;
+            }
+
+            int skip = (page.GetValueOrDefault(defaultPage) - 1) * quantity.GetValueOrDefault(defaultQuantity);
+            return _userRepository.GetAllWithInclude("Status")
+                .Where(x => x.Email!.Contains(email))
+                .Skip(skip)
+                .Take((int)quantity!);
+        }
+
         public void Update(User User)
         {
             _userRepository.Update(User);
