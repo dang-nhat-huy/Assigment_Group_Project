@@ -16,7 +16,7 @@ namespace BusinessObject.Models
         [Required]
         public double? TotalFees { get; set; }
         [Required]
-        [MinLength(1), MaxLength(255)]
+        [MinLength(1)]
         public string? Address { get; set; }
         [Required]
         public DateTime? StartTime { get; set; }

@@ -15,18 +15,17 @@ namespace Assigment_Group_Project.ViewModel
     {
         [Required]
         public double? TotalFees { get; set; }
-        [Required]
-
-        public string address { get; set; }
-
+        
         [Required]
         [MinLength(1), MaxLength(255)]
+        public string? address { get; set; }
+
+        [Required]
         public DateTime? StartTime { get; set; }
         [Required]
         public DateTime? EndTime { get; set; }
         public long? VoucherId { get; set; }
-        [Required]
-        public long? UserId { get; set; }
+        
     }
     public class FeedbackRequestVM
     {
