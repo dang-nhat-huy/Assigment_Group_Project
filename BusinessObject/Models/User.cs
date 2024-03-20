@@ -32,7 +32,9 @@ namespace BusinessObject.Models
         public virtual Status? Status { get; set; }
         [JsonIgnore]
         public virtual ICollection<Feedback> Feedbacks { get; set; }
+        [JsonIgnore]
         public virtual ICollection<UserOrder> UserOrders { get; set; }
+        [JsonIgnore]
         public virtual ICollection<UserTask> UserTasks { get; set; }
     }
 }
