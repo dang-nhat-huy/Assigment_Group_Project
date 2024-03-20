@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using Assigment_Group_Project.ViewModel;
+using AutoMapper;
+using BusinessObject.Models;
 
 namespace Assigment_Group_Project.Mapper
 {
@@ -6,7 +8,22 @@ namespace Assigment_Group_Project.Mapper
     {
         partial void AddUserMapperConfig()
         {
-            
+            CreateMap<SignUpUserVM, User>()
+                .ForMember(dest => dest.Orders, opt => opt.Ignore())
+                .ForMember(dest => dest.UserTasks, opt => opt.Ignore());
+            CreateMap<User, SignUpUserVM>();
+
+
+            CreateMap<UserCreateByAdminVM, User>()
+                .ForMember(dest => dest.Orders, opt => opt.Ignore())
+                .ForMember(dest => dest.UserTasks, opt => opt.Ignore());
+            CreateMap<User, UserCreateByAdminVM>();
+
+
+            CreateMap<UserUpdateByCustomerVM, User>()
+                .ForMember(dest => dest.Orders, opt => opt.Ignore())
+                .ForMember(dest => dest.UserTasks, opt => opt.Ignore());
+            CreateMap<User, UserUpdateByCustomerVM>();
         }
     }
 }
