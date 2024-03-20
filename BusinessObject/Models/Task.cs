@@ -17,7 +17,6 @@ namespace BusinessObject.Models
         public string? TaskName { get; set; }
         [Required]
         public string? TaskDetail { get; set; }
-
         [JsonIgnore]
         public virtual ICollection<UserTask> UserTasks { get; set; }
     }

@@ -16,7 +16,6 @@ namespace BusinessObject.Models
         [Required]
         [MinLength(1), MaxLength(50)]
         public string? CategoriesName { get; set; }
-
         [JsonIgnore]
         public virtual ICollection<Menu> Menus { get; set; }
     }

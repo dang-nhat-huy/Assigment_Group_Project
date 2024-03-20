@@ -9,24 +9,27 @@ namespace BusinessObject.Models
         public Order()
         {
             OrderDetails = new HashSet<OrderDetail>();
+            UserOrders = new HashSet<UserOrder>();
         }
 
         public long OrderId { get; set; }
         [Required]
         public double? TotalFees { get; set; }
         [Required]
+        [MinLength(1), MaxLength(255)]
+        public string? Address { get; set; }
+        [Required]
         public DateTime? StartTime { get; set; }
         [Required]
         public DateTime? EndTime { get; set; }
-        public long? VoucherId { get; set; }
         [Required]
-        public long? UserId { get; set; }
+        public long? VoucherId { get; set; }
         [Required]
         public long? StatusId { get; set; }
 
         public virtual Status? Status { get; set; }
-        public virtual User? User { get; set; }
         public virtual Voucher? Voucher { get; set; }
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+        public virtual ICollection<UserOrder> UserOrders { get; set; }
     }
 }

@@ -18,8 +18,7 @@ namespace BusinessObject.Models
         public string? MenuItem { get; set; }
         [Range(1000,100000000)]
         public double? Price { get; set; }
-        public long? CategoriesId { get; set; }
-
+        public long? CategoriesId { get; set; }       
         public virtual Category? Categories { get; set; }
         [JsonIgnore]
         public virtual ICollection<OrderDetailMenu> OrderDetailMenus { get; set; }

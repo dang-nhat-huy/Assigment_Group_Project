@@ -16,7 +16,7 @@ namespace BusinessObject.Models
         public string? Code { get; set; }
         public DateTime? ExpireDate { get; set; }
         public double? Discount { get; set; }
-        [JsonIgnore ]
+        [JsonIgnore]
         public virtual ICollection<Order> Orders { get; set; }
     }
 }

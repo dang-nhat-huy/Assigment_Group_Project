@@ -28,6 +28,7 @@ namespace BusinessObject.Models
         public virtual DbSet<Status> Statuses { get; set; } = null!;
         public virtual DbSet<Task> Tasks { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
+        public virtual DbSet<UserOrder> UserOrders { get; set; } = null!;
         public virtual DbSet<UserTask> UserTasks { get; set; } = null!;
         public virtual DbSet<Voucher> Vouchers { get; set; } = null!;
 
@@ -38,6 +39,7 @@ namespace BusinessObject.Models
                 optionsBuilder.UseSqlServer(GetConnectionString());
             }
         }
+
         private string GetConnectionString()
         {
             IConfiguration config = new ConfigurationBuilder()
@@ -54,7 +56,7 @@ namespace BusinessObject.Models
             modelBuilder.Entity<Category>(entity =>
             {
                 entity.HasKey(e => e.CategoriesId)
-                    .HasName("PK__Category__92BEE78AF052D098");
+                    .HasName("PK__Category__92BEE78A8CD7F5D5");
 
                 entity.ToTable("Category");
 
@@ -69,7 +71,7 @@ namespace BusinessObject.Models
             modelBuilder.Entity<Feedback>(entity =>
             {
                 entity.HasKey(e => e.FbId)
-                    .HasName("PK__Feedback__A81DB82D2BF58359");
+                    .HasName("PK__Feedback__A81DB82D27F0E64D");
 
                 entity.ToTable("Feedback");
 
@@ -115,6 +117,10 @@ namespace BusinessObject.Models
 
                 entity.Property(e => e.OrderId).HasColumnName("order_id");
 
+                entity.Property(e => e.Address)
+                    .HasMaxLength(255)
+                    .HasColumnName("address");
+
                 entity.Property(e => e.EndTime)
                     .HasColumnType("date")
                     .HasColumnName("end_time");
@@ -127,19 +133,12 @@ namespace BusinessObject.Models
 
                 entity.Property(e => e.TotalFees).HasColumnName("total_fees");
 
-                entity.Property(e => e.UserId).HasColumnName("user_id");
-
                 entity.Property(e => e.VoucherId).HasColumnName("voucher_id");
 
                 entity.HasOne(d => d.Status)
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.StatusId)
                     .HasConstraintName("FK_Order_Status");
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.Orders)
-                    .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK_Order_User");
 
                 entity.HasOne(d => d.Voucher)
                     .WithMany(p => p.Orders)
@@ -176,7 +175,7 @@ namespace BusinessObject.Models
 
             modelBuilder.Entity<OrderDetailMenu>(entity =>
             {
-                entity.ToTable("OrderDetail_Menu");
+                entity.ToTable("Order_Detail_Menu");
 
                 entity.Property(e => e.OrderDetailMenuId).HasColumnName("order_detail_menu_id");
 
@@ -298,6 +297,29 @@ namespace BusinessObject.Models
                     .WithMany(p => p.Users)
                     .HasForeignKey(d => d.StatusId)
                     .HasConstraintName("FK_User_Status");
+            });
+
+            modelBuilder.Entity<UserOrder>(entity =>
+            {
+                entity.ToTable("User_Order");
+
+                entity.Property(e => e.UserOrderId).HasColumnName("user_order_id");
+
+                entity.Property(e => e.OrderId).HasColumnName("order_id");
+
+                entity.Property(e => e.UserId).HasColumnName("user_id");
+
+                entity.HasOne(d => d.Order)
+                    .WithMany(p => p.UserOrders)
+                    .HasForeignKey(d => d.OrderId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_User_Order_Order");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.UserOrders)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_User_Order_User");
             });
 
             modelBuilder.Entity<UserTask>(entity =>

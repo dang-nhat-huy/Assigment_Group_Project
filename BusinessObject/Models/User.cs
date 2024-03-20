@@ -8,7 +8,7 @@ namespace BusinessObject.Models
         public User()
         {
             Feedbacks = new HashSet<Feedback>();
-            Orders = new HashSet<Order>();
+            UserOrders = new HashSet<UserOrder>();
             UserTasks = new HashSet<UserTask>();
         }
 
@@ -23,7 +23,7 @@ namespace BusinessObject.Models
 
         public virtual Status? Status { get; set; }
         public virtual ICollection<Feedback> Feedbacks { get; set; }
-        public virtual ICollection<Order> Orders { get; set; }
+        public virtual ICollection<UserOrder> UserOrders { get; set; }
         public virtual ICollection<UserTask> UserTasks { get; set; }
     }
 }
