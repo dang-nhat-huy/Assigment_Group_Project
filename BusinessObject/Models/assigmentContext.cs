@@ -24,8 +24,11 @@ namespace BusinessObject.Models
         public virtual DbSet<OrderDetail> OrderDetails { get; set; } = null!;
         public virtual DbSet<OrderDetailMenu> OrderDetailMenus { get; set; } = null!;
         public virtual DbSet<OrderDetailService> OrderDetailServices { get; set; } = null!;
+        public virtual DbSet<Room> Rooms { get; set; } = null!;
         public virtual DbSet<Service> Services { get; set; } = null!;
-        public virtual DbSet<Status> Statuses { get; set; } = null!;
+        public virtual DbSet<StatusOrder> StatusOrders { get; set; } = null!;
+        public virtual DbSet<StatusRoom> StatusRooms { get; set; } = null!;
+        public virtual DbSet<StatusUser> StatusUsers { get; set; } = null!;
         public virtual DbSet<Task> Tasks { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
         public virtual DbSet<UserOrder> UserOrders { get; set; } = null!;
@@ -56,7 +59,7 @@ namespace BusinessObject.Models
             modelBuilder.Entity<Category>(entity =>
             {
                 entity.HasKey(e => e.CategoriesId)
-                    .HasName("PK__Category__92BEE78A8CD7F5D5");
+                    .HasName("PK__Category__92BEE78A5DD7447F");
 
                 entity.ToTable("Category");
 
@@ -71,7 +74,7 @@ namespace BusinessObject.Models
             modelBuilder.Entity<Feedback>(entity =>
             {
                 entity.HasKey(e => e.FbId)
-                    .HasName("PK__Feedback__A81DB82D27F0E64D");
+                    .HasName("PK__Feedback__A81DB82DAAF9DF30");
 
                 entity.ToTable("Feedback");
 
@@ -129,16 +132,16 @@ namespace BusinessObject.Models
                     .HasColumnType("date")
                     .HasColumnName("start_time");
 
-                entity.Property(e => e.StatusId).HasColumnName("status_id");
+                entity.Property(e => e.StatusOrderId).HasColumnName("status_order_id");
 
                 entity.Property(e => e.TotalFees).HasColumnName("total_fees");
 
                 entity.Property(e => e.VoucherId).HasColumnName("voucher_id");
 
-                entity.HasOne(d => d.Status)
+                entity.HasOne(d => d.StatusOrder)
                     .WithMany(p => p.Orders)
-                    .HasForeignKey(d => d.StatusId)
-                    .HasConstraintName("FK_Order_Status");
+                    .HasForeignKey(d => d.StatusOrderId)
+                    .HasConstraintName("FK_Order_StatusOrder");
 
                 entity.HasOne(d => d.Voucher)
                     .WithMany(p => p.Orders)
@@ -152,9 +155,7 @@ namespace BusinessObject.Models
 
                 entity.Property(e => e.OrderDetailId).HasColumnName("order_detail_id");
 
-                entity.Property(e => e.Comission)
-                    .IsUnicode(false)
-                    .HasColumnName("comission");
+                entity.Property(e => e.Commission).HasColumnName("commission");
 
                 entity.Property(e => e.Note)
                     .HasMaxLength(255)
@@ -163,14 +164,17 @@ namespace BusinessObject.Models
 
                 entity.Property(e => e.OrderId).HasColumnName("order_id");
 
-                entity.Property(e => e.Room)
-                    .IsUnicode(false)
-                    .HasColumnName("room");
+                entity.Property(e => e.RoomId).HasColumnName("room_id");
 
                 entity.HasOne(d => d.Order)
                     .WithMany(p => p.OrderDetails)
                     .HasForeignKey(d => d.OrderId)
                     .HasConstraintName("FK_OrderDetail_Order");
+
+                entity.HasOne(d => d.Room)
+                    .WithMany(p => p.OrderDetails)
+                    .HasForeignKey(d => d.RoomId)
+                    .HasConstraintName("FK_OrderDetail_Room");
             });
 
             modelBuilder.Entity<OrderDetailMenu>(entity =>
@@ -186,13 +190,11 @@ namespace BusinessObject.Models
                 entity.HasOne(d => d.Menu)
                     .WithMany(p => p.OrderDetailMenus)
                     .HasForeignKey(d => d.MenuId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_OrderDetailMenu_Menu");
 
                 entity.HasOne(d => d.OrderDetail)
                     .WithMany(p => p.OrderDetailMenus)
                     .HasForeignKey(d => d.OrderDetailId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_OrderDetailMenu_OrderDetail");
             });
 
@@ -217,6 +219,38 @@ namespace BusinessObject.Models
                     .HasConstraintName("FK_OrderDetailService_Service");
             });
 
+            modelBuilder.Entity<Room>(entity =>
+            {
+                entity.ToTable("Room");
+
+                entity.Property(e => e.RoomId).HasColumnName("room_id");
+
+                entity.Property(e => e.Capacity).HasColumnName("capacity");
+
+                entity.Property(e => e.Description)
+                    .IsUnicode(false)
+                    .HasColumnName("description");
+
+                entity.Property(e => e.Location)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("location");
+
+                entity.Property(e => e.Price).HasColumnName("price");
+
+                entity.Property(e => e.RoomName)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("room_name");
+
+                entity.Property(e => e.StatusRoomId).HasColumnName("status_room_id");
+
+                entity.HasOne(d => d.StatusRoom)
+                    .WithMany(p => p.Rooms)
+                    .HasForeignKey(d => d.StatusRoomId)
+                    .HasConstraintName("FK_Room_StatusRoom");
+            });
+
             modelBuilder.Entity<Service>(entity =>
             {
                 entity.ToTable("Service");
@@ -231,11 +265,35 @@ namespace BusinessObject.Models
                     .HasColumnName("service_name");
             });
 
-            modelBuilder.Entity<Status>(entity =>
+            modelBuilder.Entity<StatusOrder>(entity =>
             {
-                entity.ToTable("Status");
+                entity.ToTable("Status_Order");
 
-                entity.Property(e => e.StatusId).HasColumnName("status_id");
+                entity.Property(e => e.StatusOrderId).HasColumnName("status_order_id");
+
+                entity.Property(e => e.StatusName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("status_name");
+            });
+
+            modelBuilder.Entity<StatusRoom>(entity =>
+            {
+                entity.ToTable("Status_Room");
+
+                entity.Property(e => e.StatusRoomId).HasColumnName("status_room_id");
+
+                entity.Property(e => e.StatusName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("status_name");
+            });
+
+            modelBuilder.Entity<StatusUser>(entity =>
+            {
+                entity.ToTable("Status_User");
+
+                entity.Property(e => e.StatusUserId).HasColumnName("status_user_id");
 
                 entity.Property(e => e.StatusName)
                     .HasMaxLength(50)
@@ -291,12 +349,12 @@ namespace BusinessObject.Models
                     .IsUnicode(false)
                     .HasColumnName("role");
 
-                entity.Property(e => e.StatusId).HasColumnName("status_id");
+                entity.Property(e => e.StatusUserId).HasColumnName("status_user_id");
 
-                entity.HasOne(d => d.Status)
+                entity.HasOne(d => d.StatusUser)
                     .WithMany(p => p.Users)
-                    .HasForeignKey(d => d.StatusId)
-                    .HasConstraintName("FK_User_Status");
+                    .HasForeignKey(d => d.StatusUserId)
+                    .HasConstraintName("FK_User_StatusUser");
             });
 
             modelBuilder.Entity<UserOrder>(entity =>
@@ -312,13 +370,11 @@ namespace BusinessObject.Models
                 entity.HasOne(d => d.Order)
                     .WithMany(p => p.UserOrders)
                     .HasForeignKey(d => d.OrderId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_User_Order_Order");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.UserOrders)
                     .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_User_Order_User");
             });
 

@@ -23,12 +23,11 @@ namespace BusinessObject.Models
         public DateTime? StartTime { get; set; }
         [Required]
         public DateTime? EndTime { get; set; }
-        [Required]
         public long? VoucherId { get; set; }
         [Required]
-        public long? StatusId { get; set; }
+        public long? StatusOrderId { get; set; }
 
-        public virtual Status? Status { get; set; }
+        public virtual StatusOrder? StatusOrder { get; set; }
         public virtual Voucher? Voucher { get; set; }
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
         [JsonIgnore]

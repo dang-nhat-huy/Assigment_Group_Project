@@ -16,7 +16,7 @@ namespace BusinessObject.Models
         [Required]
         [MinLength(1), MaxLength(50)]
         public string? MenuItem { get; set; }
-        [Range(1000,100000000)]
+        [Range(1000, 100000000)]
         public double? Price { get; set; }
         public long? CategoriesId { get; set; }       
         public virtual Category? Categories { get; set; }

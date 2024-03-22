@@ -27,9 +27,9 @@ namespace BusinessObject.Models
         public string? Phone { get; set; }
         public DateTime? DoB { get; set; }
         public string? Role { get; set; }
-        public long? StatusId { get; set; }
+        public long? StatusUserId { get; set; }
 
-        public virtual Status? Status { get; set; }
+        public virtual StatusUser? StatusUser { get; set; }
         [JsonIgnore]
         public virtual ICollection<Feedback> Feedbacks { get; set; }
         [JsonIgnore]

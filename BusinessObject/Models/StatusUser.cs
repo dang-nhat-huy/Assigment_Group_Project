@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace BusinessObject.Models
 {
-    public partial class Status
+    public partial class StatusUser
     {
-        public Status()
+        public StatusUser()
         {
-            Orders = new HashSet<Order>();
             Users = new HashSet<User>();
         }
 
-        public long StatusId { get; set; }
+        public long StatusUserId { get; set; }
+        [Required]
+        [MinLength(1)]
         public string? StatusName { get; set; }
-
-        [JsonIgnore]
-        public virtual ICollection<Order> Orders { get; set; }
         [JsonIgnore]
         public virtual ICollection<User> Users { get; set; }
     }

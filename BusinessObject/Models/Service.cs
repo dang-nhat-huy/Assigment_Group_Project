@@ -14,9 +14,9 @@ namespace BusinessObject.Models
 
         public long ServiceId { get; set; }
         [Required]
-        [MinLength(1),MaxLength(50)]
+        [MinLength(1), MaxLength(50)]
         public string? ServiceName { get; set; }
-        [Range(1000,100000000)]
+        [Range(1000, 100000000)]
         public double? Fee { get; set; }
         [JsonIgnore]
         public virtual ICollection<OrderDetailService> OrderDetailServices { get; set; }

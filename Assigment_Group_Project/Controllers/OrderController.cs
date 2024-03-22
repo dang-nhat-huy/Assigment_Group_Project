@@ -42,7 +42,7 @@ namespace Assigment_Group_Project.Controllers
         {
             try
             {
-                var list = _orderService.GetAll(page, quanity).Where(x => x.StatusId == 1);
+                var list = _orderService.GetAll(page, quanity).Where(x => x.StatusOrderId == 1);
                 if (!list.Any())
                 {
                     return NotFound(ReturnMessage.EMPTY_LIST);
@@ -65,7 +65,7 @@ namespace Assigment_Group_Project.Controllers
                 }
 
                 var newOrder = _mapper.Map<Order>(order);
-                newOrder.StatusId = 1;
+                newOrder.StatusOrderId = 1;
                 _orderService.Add(newOrder);
                 _orderService.Save();
 
@@ -117,7 +117,7 @@ namespace Assigment_Group_Project.Controllers
                     statusId = 3;
                 }
 
-                order.StatusId = statusId;
+                order.StatusOrderId = statusId;
                 _orderService.Update(order);
                 _orderService.Save();
 
