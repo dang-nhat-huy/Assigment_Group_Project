@@ -1,4 +1,5 @@
 ﻿using Assigment_Group_Project.ViewModel;
+using BusinessObject.CustomMessage;
 using BusinessObject.Models;
 using Microsoft.AspNetCore.Mvc;
 using Service.IService;
@@ -26,7 +27,7 @@ namespace Assigment_Group_Project.Controllers
                 var product = _servicesService.GetById(id);
                 if (product == null)
                 {
-                    return NotFound("Cannot Find Services");
+                    return NotFound(ReturnMessage.SERVICE_NOT_FOUND);
                 }
                 return Ok(product);
             }
@@ -45,7 +46,7 @@ namespace Assigment_Group_Project.Controllers
                 var list = _servicesService.GetAll(page, quantity);
                 if (!list.Any())
                 {
-                    return NotFound("There's No Data");
+                    return NotFound(ReturnMessage.EMPTY_LIST);
                 }
                 return Ok(list);
             }
@@ -63,13 +64,13 @@ namespace Assigment_Group_Project.Controllers
                 var deleteServicesItem = _servicesService.GetById(id);
                 if (deleteServicesItem == null)
                 {
-                    return NotFound();
+                    return NotFound(ReturnMessage.SERVICE_NOT_FOUND);
                 }
 
                 _servicesService.Delete(deleteServicesItem);
                 _servicesService.Save();
 
-                return Ok();
+                return Ok(ReturnMessage.DELETE_SUCCESS);
             }
             catch (Exception ex)
             {
@@ -88,17 +89,17 @@ namespace Assigment_Group_Project.Controllers
                 }
                 if (string.IsNullOrEmpty(name))
                 {
-                    return BadRequest();
+                    return BadRequest(ReturnMessage.NULL_DATA);
                 }
                 if (name != null && name.Trim().Length > 50)
                 {
-                    return BadRequest();
+                    return BadRequest(ReturnMessage.BAD_REQUEST);
                 }
 
                 var existServices = _servicesService.GetAll().Where(x => x.ServiceName!.Equals(name));
                 if (existServices.Any())
                 {
-                    return BadRequest();
+                    return BadRequest(ReturnMessage.DUPLICATE_NAME);
                 }
 
                 Services newServicesItem = new Services
@@ -110,7 +111,7 @@ namespace Assigment_Group_Project.Controllers
                 _servicesService.Add(newServicesItem);
                 _servicesService.Save();
 
-                return Ok();
+                return Ok(ReturnMessage.ADD_SUCCESS);
             }
             catch (Exception ex)
             {
@@ -125,19 +126,19 @@ namespace Assigment_Group_Project.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest();
+                    return BadRequest(ReturnMessage.BAD_REQUEST);
                 }
 
                 //Get Item need to Update
                 var updateServicesItem = _servicesService.GetById(id);
                 if (updateServicesItem == null)
                 {
-                    return NotFound();
+                    return NotFound(ReturnMessage.SERVICE_NOT_FOUND);
                 }
 
                 if (updateServicesItem.Equals(serviceRequestVM.ServiceName))
                 {
-                    return BadRequest();
+                    return BadRequest(ReturnMessage.DUPLICATE_NAME);
                 }
                 // Update price if provided, otherwise keep the current price
                 if (serviceRequestVM.Fee.HasValue)
@@ -150,7 +151,7 @@ namespace Assigment_Group_Project.Controllers
                     var existServicesItem = _servicesService.GetAll().Where(x => x.ServiceName!.Equals(serviceRequestVM.ServiceName));
                     if (existServicesItem.Any())
                     {
-                        return BadRequest();
+                        return BadRequest(ReturnMessage.DUPLICATE_NAME);
                     }
 
                 }
@@ -158,7 +159,7 @@ namespace Assigment_Group_Project.Controllers
                 _servicesService.Update(updateServicesItem);
                 _servicesService.Save();
 
-                return Ok();
+                return Ok(ReturnMessage.UPDATE_SUCCESS);
             }
             catch (Exception ex)
             {
@@ -175,7 +176,7 @@ namespace Assigment_Group_Project.Controllers
                 var checkExist = _servicesService.GetAll(page, quantity).Where(x => x.ServiceName.ToLower().Contains(serviceName.ToLower())).ToList();
                 if (checkExist == null)
                 {
-                    return NotFound("Not Found");
+                    return NotFound(ReturnMessage.EMPTY_LIST);
                 }
                 return Ok(checkExist);
             }

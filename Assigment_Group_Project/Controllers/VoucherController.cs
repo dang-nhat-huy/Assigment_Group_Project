@@ -1,5 +1,6 @@
 ﻿using Assigment_Group_Project.ViewModel;
 using AutoMapper;
+using BusinessObject.CustomMessage;
 using BusinessObject.Models;
 using Microsoft.AspNetCore.Mvc;
 using Service.IService;
@@ -27,7 +28,7 @@ namespace Assigment_Group_Project.Controllers
                 var ListVoucher = _mapper.Map<List<VoucherViewModel>>(list);
                 if (!list.Any())
                 {
-                    return NotFound();
+                    return NotFound(ReturnMessage.EMPTY_LIST);
                 }
                 return Ok(ListVoucher);
             }
@@ -45,7 +46,7 @@ namespace Assigment_Group_Project.Controllers
                 var viewVoucher = _mapper.Map<VoucherViewModel>(Voucher);
                 if (Voucher == null)
                 {
-                    return NotFound();
+                    return NotFound(ReturnMessage.VOUCHER_NOT_FOUND);
                 }
                 return Ok(viewVoucher);
             }
@@ -62,7 +63,7 @@ namespace Assigment_Group_Project.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest();
+                    return BadRequest(ReturnMessage.BAD_REQUEST);
                 }
 
                 _service.Add(voucher);
@@ -82,14 +83,14 @@ namespace Assigment_Group_Project.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest();
+                    return BadRequest(ReturnMessage.BAD_REQUEST);
                 }
 
                 var existVoucher = _service.GetById(id);
 
                 if (existVoucher == null)
                 {
-                    return NotFound();
+                    return NotFound(ReturnMessage.VOUCHER_NOT_FOUND);
                 }
                 //if (!existVoucher.VoucherId!.Equals(voucher.VoucherId))
                 //{
@@ -129,7 +130,7 @@ namespace Assigment_Group_Project.Controllers
 
                 _service.Delete(Voucher);
                 _service.Save();
-                return Ok();
+                return Ok(ReturnMessage.DELETE_SUCCESS);
             }
             catch (Exception ex)
             {
