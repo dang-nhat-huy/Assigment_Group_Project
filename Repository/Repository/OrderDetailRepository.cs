@@ -1,5 +1,6 @@
 ﻿using BusinessObject.Models;
 using DataAccessObject;
+using Repository.IRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Repository.Repository
 {
-    public class OrderDetailDetailRepository
+    public class OrderDetailRepository : IOrderDetailRepository
     {
         public void Add(OrderDetail orderDetail) => OrderDetailDAO.Instance.Add(orderDetail);
 

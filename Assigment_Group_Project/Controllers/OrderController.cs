@@ -145,7 +145,7 @@ namespace Assigment_Group_Project.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpGet("GetOrderDetail/{orderId}")]
+        [HttpGet("GetOrderDetail/orderId/{orderId}")]
         public IActionResult GetOrderDetailByOrderId([FromRoute] long orderId)
         {
             try
@@ -162,7 +162,7 @@ namespace Assigment_Group_Project.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpGet("GetOrderDetail/{id}")]
+        [HttpGet("GetOrderDetail/orderDetailId/{id}")]
         public IActionResult GetOrderDetailById([FromRoute] long id)
         {
             try
