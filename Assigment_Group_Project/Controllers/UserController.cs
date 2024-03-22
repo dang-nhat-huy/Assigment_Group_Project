@@ -37,7 +37,7 @@ namespace Assigment_Group_Project.Controllers
                 {
                     return Unauthorized(ReturnMessage.WRONG_LOGIN_INFO);
                 }
-                if(loginAccount.StatusId == 2)
+                if(loginAccount.StatusUserId == 2)
                 {
                     return Unauthorized(ReturnMessage.BANNED);
                 }
@@ -73,7 +73,7 @@ namespace Assigment_Group_Project.Controllers
 
                 User newUser = _mapper.Map<User>(user);
                 newUser.Role = "Customer";
-                newUser.StatusId = 1;
+                newUser.StatusUserId = 1;
                 _userService.Add(newUser);
                 _userService.Save();
 
@@ -146,7 +146,7 @@ namespace Assigment_Group_Project.Controllers
                 }
 
                 var newUser = _mapper.Map<User>(user);
-                newUser.StatusId = 1;
+                newUser.StatusUserId = 1;
                 _userService.Add(newUser);
                 _userService.Save();
 
@@ -231,16 +231,16 @@ namespace Assigment_Group_Project.Controllers
                     return NotFound(ReturnMessage.USER_NOT_FOUND);
                 }
 
-                switch (existUser.StatusId)
+                switch (existUser.StatusUserId)
                 {
                     case 1:
-                        existUser.StatusId = 2;
+                        existUser.StatusUserId = 2;
                         break;
                     case 2:
-                        existUser.StatusId = 1;
+                        existUser.StatusUserId = 1;
                         break;
                     default:
-                        existUser.StatusId = 1;
+                        existUser.StatusUserId = 1;
                         break;
                 }
 

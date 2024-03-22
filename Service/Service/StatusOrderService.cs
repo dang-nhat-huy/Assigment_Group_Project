@@ -9,30 +9,30 @@ using System.Threading.Tasks;
 
 namespace Service.Service
 {
-    public class StatusService : IStatusService
+    public class StatusOrderService : IStatusOrderService
     {
-        private readonly IStatusRepository _statusRepository;
-        public StatusService(IStatusRepository statusRepository)
+        private readonly IStatusOrderRepository _statusOrderRepository;
+        public StatusOrderService(IStatusOrderRepository statusRepository)
         {
-            _statusRepository = statusRepository;
+            _statusOrderRepository = statusRepository;
         }
 
-        public void Add(Status status)
+        public void Add(StatusOrder status)
         {
-            _statusRepository.Add(status);
+            _statusOrderRepository.Add(status);
         }
 
-        public void Delete(Status status)
+        public void Delete(StatusOrder status)
         {
-            _statusRepository.Delete(status);
+            _statusOrderRepository.Delete(status);
         }
 
-        public IEnumerable<Status> GetAll()
+        public IEnumerable<StatusOrder> GetAll()
         {
-            return _statusRepository.GetAll();
+            return _statusOrderRepository.GetAll();
         }
 
-        public IEnumerable<Status> GetAll(int? page, int? quantity)
+        public IEnumerable<StatusOrder> GetAll(int? page, int? quantity)
         {
             const int defaultPage = 1;
             const int defaultQuantity = 10;
@@ -47,24 +47,24 @@ namespace Service.Service
             }
 
             int skip = (page.GetValueOrDefault(defaultPage) - 1) * quantity.GetValueOrDefault(defaultQuantity);
-            return _statusRepository.GetAll()
+            return _statusOrderRepository.GetAll()
                 .Skip(skip)
                 .Take((int)quantity!);
         }
 
-        public Status? GetById(long id)
+        public StatusOrder? GetById(long id)
         {
-            return _statusRepository.GetById(id);
+            return _statusOrderRepository.GetById(id);
         }
 
         public void Save()
         {
-            _statusRepository.Save();
+            _statusOrderRepository.Save();
         }
 
-        public void Update(Status status)
+        public void Update(StatusOrder status)
         {
-            _statusRepository.Update(status);
+            _statusOrderRepository.Update(status);
         }
     }
 }

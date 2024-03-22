@@ -64,7 +64,7 @@ namespace Assigment_Group_Project.Controllers
         {
             try
             {
-                var checkExist = _menuService.GetAll(page, quantity).Where(x => x.MenuItem.ToLower().Contains(productName.ToLower())).ToList();
+                var checkExist = _menuService.GetAll(page, quantity).Where(x => x.MenuItem!.ToLower().Contains(productName.ToLower())).ToList();
                 if (checkExist == null)
                 {
                     return NotFound(ReturnMessage.EMPTY_LIST);

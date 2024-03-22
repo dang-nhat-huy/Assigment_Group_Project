@@ -173,7 +173,7 @@ namespace Assigment_Group_Project.Controllers
         {
             try
             {
-                var checkExist = _servicesService.GetAll(page, quantity).Where(x => x.ServiceName.ToLower().Contains(serviceName.ToLower())).ToList();
+                var checkExist = _servicesService.GetAll(page, quantity).Where(x => x.ServiceName!.ToLower().Contains(serviceName.ToLower())).ToList();
                 if (checkExist == null)
                 {
                     return NotFound(ReturnMessage.EMPTY_LIST);
