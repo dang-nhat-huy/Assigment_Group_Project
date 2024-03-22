@@ -1,5 +1,6 @@
 ﻿using Assigment_Group_Project.ViewModel;
 using AutoMapper;
+using BusinessObject.CustomMessage;
 using Microsoft.AspNetCore.Mvc;
 using Service.IService;
 using Task = BusinessObject.Models.Task;
@@ -24,7 +25,7 @@ namespace Assigment_Group_Project.Controllers
                 var list = _taskService.GetAll(page, quantity);
                 if(!list.Any())
                 {
-                    return NotFound();
+                    return NotFound(ReturnMessage.EMPTY_LIST);
                 }
                 return Ok(list);
             }
@@ -41,7 +42,7 @@ namespace Assigment_Group_Project.Controllers
                 var task = _taskService.GetById(id);
                 if(task == null)
                 {
-                    return NotFound();
+                    return NotFound(ReturnMessage.TASK_NOT_FOUND);
                 }
                 return Ok(task);
             }
@@ -57,14 +58,14 @@ namespace Assigment_Group_Project.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest();
+                    return BadRequest(ReturnMessage.BAD_REQUEST);
                 }
 
                 Task newTask = _mapper.Map<Task>(task);
                 _taskService.Add(newTask);
                 _taskService.Save();
 
-                return Ok();
+                return Ok(ReturnMessage.ADD_SUCCESS);
             }
             catch(Exception ex)
             {
@@ -78,20 +79,20 @@ namespace Assigment_Group_Project.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest();
+                    return BadRequest(ReturnMessage.BAD_REQUEST);
                 }
 
                 var existTask = _taskService.GetById(id);
                 if(existTask == null)
                 {
-                    return NotFound();
+                    return NotFound(ReturnMessage.TASK_NOT_FOUND);
                 }
                 if(!existTask.TaskName!.Equals(task.TaskName))
                 {
                     var existTasks = _taskService.GetAll().Where(x => x.TaskName!.Equals(task.TaskName, StringComparison.OrdinalIgnoreCase));
                     if(existTasks.Any())
                     {
-                        return BadRequest();
+                        return BadRequest(ReturnMessage.BAD_REQUEST);
                     }
                 }
 
@@ -99,7 +100,7 @@ namespace Assigment_Group_Project.Controllers
                 _taskService.Update(existTask);
                 _taskService.Save();
 
-                return Ok();
+                return Ok(ReturnMessage.UPDATE_SUCCESS);
             }
             catch(Exception ex)
             {
@@ -114,12 +115,12 @@ namespace Assigment_Group_Project.Controllers
                 var task = _taskService.GetById(id);
                 if (task == null)
                 {
-                    return NotFound();
+                    return NotFound(ReturnMessage.TASK_NOT_FOUND);
                 }
 
                 _taskService.Delete(task);
                 _taskService.Save();
-                return Ok();
+                return Ok(ReturnMessage.DELETE_SUCCESS);
             }
             catch (Exception ex)
             {

@@ -1,5 +1,6 @@
 ﻿using Assigment_Group_Project.ViewModel;
 using AutoMapper;
+using BusinessObject.CustomMessage;
 using BusinessObject.Models;
 using Microsoft.AspNetCore.Mvc;
 using Service.IService;
@@ -28,7 +29,7 @@ namespace Assigment_Group_Project.Controllers
                 var list = _feedbackService.GetAll(page, quantity);
                 if (!list.Any())
                 {
-                    return NotFound();
+                    return NotFound(ReturnMessage.EMPTY_LIST);
                 }
                 return Ok(list);
             }
@@ -45,7 +46,7 @@ namespace Assigment_Group_Project.Controllers
                 var feedback = _feedbackService.GetById(id);
                 if (feedback == null)
                 {
-                    return NotFound();
+                    return NotFound(ReturnMessage.FEEDBACK_NOT_FOUND);
                 }
                 return Ok(feedback);
             }
@@ -62,7 +63,7 @@ namespace Assigment_Group_Project.Controllers
                 var feedbacks = _feedbackService.GetAll().Where(x => x.UserId == userId);
                 if (!feedbacks.Any())
                 {
-                    return NotFound();
+                    return NotFound(ReturnMessage.EMPTY_LIST);
                 }
                 return Ok(feedbacks);
             }
@@ -78,19 +79,19 @@ namespace Assigment_Group_Project.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest();
+                    return BadRequest(ReturnMessage.BAD_REQUEST);
                 }
                 var user = _userService.GetById((long) request.UserId!);
                 if (user == null)
                 {
-                    return BadRequest();
+                    return BadRequest(ReturnMessage.BAD_REQUEST);
                 }
 
                 Feedback newFeedback = _mapper.Map<Feedback>(request);
                 _feedbackService.Add(newFeedback);
                 _feedbackService.Save();
 
-                return Ok();
+                return Ok(ReturnMessage.ADD_SUCCESS);
             }
             catch (Exception ex)
             {
@@ -104,24 +105,24 @@ namespace Assigment_Group_Project.Controllers
             {
                 if (string.IsNullOrEmpty(fbContent))
                 {
-                    return BadRequest();
+                    return BadRequest(ReturnMessage.NULL_DATA);
                 }
                 if (fbContent != null && fbContent.Trim().Length > 50)
                 {
-                    return BadRequest();
+                    return BadRequest(ReturnMessage.BAD_REQUEST);
                 }
 
                 var feedback = _feedbackService.GetById(id);
                 if (feedback == null)
                 {
-                    return NotFound();
+                    return NotFound(ReturnMessage.FEEDBACK_NOT_FOUND);
                 }
 
-                feedback.FbContent = fbContent;
+                feedback.FbContent = fbContent ?? feedback.FbContent;
                 _feedbackService.Update(feedback);
                 _feedbackService.Save();
 
-                return Ok();
+                return Ok(ReturnMessage.UPDATE_SUCCESS);
             }
             catch (Exception ex)
             {
@@ -136,13 +137,13 @@ namespace Assigment_Group_Project.Controllers
                 var deleteCategory = _feedbackService.GetById(id);
                 if (deleteCategory == null)
                 {
-                    return NotFound();
+                    return NotFound(ReturnMessage.FEEDBACK_NOT_FOUND);
                 }
 
                 _feedbackService.Delete(deleteCategory);
                 _feedbackService.Save();
 
-                return Ok();
+                return Ok(ReturnMessage.DELETE_SUCCESS);
             }
             catch (Exception ex)
             {

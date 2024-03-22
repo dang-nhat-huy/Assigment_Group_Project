@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using BusinessObject.CustomMessage;
 using Microsoft.AspNetCore.Mvc;
 using Service.IService;
 
@@ -21,7 +22,7 @@ namespace Assigment_Group_Project.Controllers
                 var list = _categoryService.GetAll(page, quantity);
                 if(!list.Any())
                 {
-                    return NotFound();
+                    return NotFound(ReturnMessage.EMPTY_LIST);
                 }
                 return Ok(list);
             }
@@ -38,7 +39,7 @@ namespace Assigment_Group_Project.Controllers
                 var category = _categoryService.GetById(id);
                 if(category == null)
                 {
-                    return NotFound();
+                    return NotFound(ReturnMessage.CATEGORY_NOT_FOUND);
                 }
                 return Ok(category);
             }
@@ -54,17 +55,17 @@ namespace Assigment_Group_Project.Controllers
             {
                 if (string.IsNullOrEmpty(name))
                 {
-                    return BadRequest();
+                    return BadRequest(ReturnMessage.NULL_DATA);
                 }
                 if (name != null && name.Trim().Length > 50)
                 {
-                    return BadRequest();
+                    return BadRequest(ReturnMessage.BAD_REQUEST);
                 }
 
                 var existCategory = _categoryService.GetAll().Where(x => x.CategoriesName!.Equals(name));
                 if (existCategory.Any())
                 {
-                    return BadRequest();
+                    return BadRequest(ReturnMessage.DUPLICATE_NAME);
                 }
 
                 Category newCategory = new Category { CategoriesName = name };
@@ -72,7 +73,7 @@ namespace Assigment_Group_Project.Controllers
                 _categoryService.Add(newCategory);
                 _categoryService.Save();
 
-                return Ok();
+                return Ok(ReturnMessage.ADD_SUCCESS);
             }
             catch(Exception ex)
             {
@@ -86,29 +87,29 @@ namespace Assigment_Group_Project.Controllers
             {
                 if (string.IsNullOrEmpty(name))
                 {
-                    return BadRequest();
+                    return BadRequest(ReturnMessage.NULL_DATA);
                 }
                 if(name != null && name.Trim().Length > 50)
                 {
-                    return BadRequest();
+                    return BadRequest(ReturnMessage.BAD_REQUEST);
                 }
 
                 var updateCategory = _categoryService.GetById(id);
                 if (updateCategory == null)
                 {
-                    return NotFound();
+                    return NotFound(ReturnMessage.CATEGORY_NOT_FOUND);
                 }
 
-                if (updateCategory.Equals(name))
+                if (updateCategory.CategoriesName!.Equals(name))
                 {
-                    return BadRequest();
+                    return BadRequest(ReturnMessage.DUPLICATE_NAME);
                 }
                 else
                 {
                     var existCategory = _categoryService.GetAll().Where(x => x.CategoriesName!.Equals(name));
                     if (existCategory.Any())
                     {
-                        return BadRequest();
+                        return BadRequest(ReturnMessage.BAD_REQUEST);
                     }
                 }
 
@@ -116,7 +117,7 @@ namespace Assigment_Group_Project.Controllers
                 _categoryService.Update(updateCategory);
                 _categoryService.Save();
 
-                return Ok();
+                return Ok(ReturnMessage.UPDATE_SUCCESS);
             }
             catch(Exception ex)
             {
@@ -131,13 +132,13 @@ namespace Assigment_Group_Project.Controllers
                 var deleteCategory = _categoryService.GetById(id);
                 if (deleteCategory == null)
                 {
-                    return NotFound();
+                    return NotFound(ReturnMessage.CATEGORY_NOT_FOUND);
                 }
 
                 _categoryService.Delete(deleteCategory);
                 _categoryService.Save();
 
-                return Ok();
+                return Ok(ReturnMessage.DELETE_SUCCESS);
             }
             catch (Exception ex)
             {

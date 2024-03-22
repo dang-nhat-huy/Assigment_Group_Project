@@ -1,5 +1,6 @@
 ﻿using Assigment_Group_Project.ViewModel;
 using AutoMapper;
+using BusinessObject.CustomMessage;
 using BusinessObject.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -34,11 +35,11 @@ namespace Assigment_Group_Project.Controllers
                                                                      && x.Password!.Equals(password));
                 if(loginAccount == null)
                 {
-                    return Unauthorized();
+                    return Unauthorized(ReturnMessage.WRONG_LOGIN_INFO);
                 }
                 if(loginAccount.StatusId == 2)
                 {
-                    return Unauthorized();
+                    return Unauthorized(ReturnMessage.BANNED);
                 }
 
                 string jwt = GenerateToken(loginAccount);
@@ -56,18 +57,18 @@ namespace Assigment_Group_Project.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest();
+                    return BadRequest(ReturnMessage.BAD_REQUEST);
                 }
 
                 if (!user.Password!.Equals(user.ConfirmPassword))
                 {
-                    return BadRequest();
+                    return BadRequest(ReturnMessage.FAILED_MATCH_PASSWORD);
                 }
 
                 var existUser = _userService.GetAll().FirstOrDefault(x => x.Email!.Equals(user.Email));
                 if (existUser != null)
                 {
-                    return BadRequest();
+                    return BadRequest(ReturnMessage.DUPLICATE_EMAIL);
                 }
 
                 User newUser = _mapper.Map<User>(user);
@@ -76,7 +77,7 @@ namespace Assigment_Group_Project.Controllers
                 _userService.Add(newUser);
                 _userService.Save();
 
-                return Ok();
+                return Ok(ReturnMessage.SIGNUP_SUCCESS);
             }
             catch(Exception ex)
             {
@@ -91,7 +92,7 @@ namespace Assigment_Group_Project.Controllers
                 var list = _userService.GetAll(page, quantity);
                 if (!list.Any())
                 {
-                    return NotFound();
+                    return NotFound(ReturnMessage.EMPTY_LIST);
                 }
                 return Ok(list);
             }
@@ -108,7 +109,7 @@ namespace Assigment_Group_Project.Controllers
                 var user = _userService.GetById(id);
                 if (user == null)
                 {
-                    return NotFound();
+                    return NotFound(ReturnMessage.USER_NOT_FOUND);
                 }
                 return Ok(user);
             }
@@ -125,7 +126,7 @@ namespace Assigment_Group_Project.Controllers
                 var list = _userService.SearchByEmail(email, page, quantity);
                 if (!list.Any())
                 {
-                    return NotFound();
+                    return NotFound(ReturnMessage.EMPTY_LIST);
                 }
                 return Ok(list);
             }
@@ -141,7 +142,7 @@ namespace Assigment_Group_Project.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest();
+                    return BadRequest(ReturnMessage.BAD_REQUEST);
                 }
 
                 var newUser = _mapper.Map<User>(user);
@@ -149,7 +150,7 @@ namespace Assigment_Group_Project.Controllers
                 _userService.Add(newUser);
                 _userService.Save();
 
-                return Ok();
+                return Ok(ReturnMessage.ADD_SUCCESS);
             }
             catch(Exception ex)
             {
@@ -163,13 +164,13 @@ namespace Assigment_Group_Project.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest();
+                    return BadRequest(ReturnMessage.BAD_REQUEST);
                 }
 
                 var existUser = _userService.GetById(id);
                 if (existUser == null)
                 {
-                    return NotFound();
+                    return NotFound(ReturnMessage.USER_NOT_FOUND);
                 }
 
                 if (!existUser.Email!.Equals(user.Email))
@@ -177,7 +178,7 @@ namespace Assigment_Group_Project.Controllers
                     var existUserByEmail = _userService.GetAll().Where(x => x.Email!.Equals(user.Email, StringComparison.OrdinalIgnoreCase));
                     if (!existUserByEmail.Any())
                     {
-                        return BadRequest();
+                        return BadRequest(ReturnMessage.DUPLICATE_EMAIL);
                     }
                 }
 
@@ -185,7 +186,7 @@ namespace Assigment_Group_Project.Controllers
                 _userService.Update(existUser);
                 _userService.Save();
 
-                return Ok();
+                return Ok(ReturnMessage.UPDATE_SUCCESS);
             }
             catch(Exception ex)
             {
@@ -199,20 +200,20 @@ namespace Assigment_Group_Project.Controllers
             {
                 if(role == null)
                 {
-                    return BadRequest();
+                    return BadRequest(ReturnMessage.NULL_DATA);
                 }
 
                 var existUser = _userService.GetById(id);
                 if (existUser == null)
                 {
-                    return NotFound();
+                    return NotFound(ReturnMessage.USER_NOT_FOUND);
                 }
 
                 existUser.Role = role;
                 _userService.Update(existUser);
                 _userService.Save();
 
-                return Ok();
+                return Ok(ReturnMessage.UPDATE_SUCCESS);
             }
             catch(Exception ex)
             {
@@ -227,7 +228,7 @@ namespace Assigment_Group_Project.Controllers
                 var existUser = _userService.GetById(id);
                 if (existUser == null)
                 {
-                    return NotFound();
+                    return NotFound(ReturnMessage.USER_NOT_FOUND);
                 }
 
                 switch (existUser.StatusId)
@@ -246,7 +247,7 @@ namespace Assigment_Group_Project.Controllers
                 _userService.Update(existUser);
                 _userService.Save();
 
-                return Ok();
+                return Ok(ReturnMessage.UPDATE_STATUS_SUCCESS);
             }
             catch (Exception ex)
             {
@@ -261,13 +262,13 @@ namespace Assigment_Group_Project.Controllers
                 var existUser = _userService.GetById(id);
                 if (existUser == null)
                 {
-                    return NotFound();
+                    return NotFound(ReturnMessage.USER_NOT_FOUND);
                 }
 
                 _userService.Delete(existUser);
                 _userService.Save();
 
-                return Ok();
+                return Ok(ReturnMessage.DELETE_SUCCESS);
             }
             catch(Exception ex)
             {
