@@ -69,7 +69,7 @@ namespace Assigment_Group_Project.Controllers
                 _orderService.Add(newOrder);
                 _orderService.Save();
 
-                return Ok();
+                return Ok(ReturnMessage.ADD_SUCCESS);
             }
             catch(Exception ex)
             {
@@ -173,6 +173,66 @@ namespace Assigment_Group_Project.Controllers
                     return NotFound(ReturnMessage.ORDER_DETAIL_NOT_FOUND);
                 }
                 return Ok(orderDetail);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPost("AddOrderDetail", Name = "Create New Order Detail From User")]
+        public IActionResult CreateOrderDetailUser(OrderDetailRequestVM request)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest();
+                }
+                var order = _orderService.GetById((long)request.OrderId!);
+                if(order == null)
+                {
+                    return NotFound(ReturnMessage.ORDER_NOT_FOUND);
+                }
+
+                var newOrderDetail = _mapper.Map<OrderDetail>(request);
+                newOrderDetail.Commission = order!.TotalFees*5/100;
+                _orderDetailServices.Add(newOrderDetail);
+                _orderDetailServices.Save();
+
+                return Ok(ReturnMessage.ADD_SUCCESS);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPatch("UpdateOrderDetail/{id}", Name = "Update Order Detail From User")]
+        public IActionResult UpdateOrderDetail([FromRoute] long id, OrderDetailUpdateRequestVM request)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ReturnMessage.BAD_REQUEST);
+                }
+
+                var updateOrderDetail = _orderDetailServices.GetById(id);
+                if (updateOrderDetail == null)
+                {
+                    return NotFound(ReturnMessage.ORDER_NOT_FOUND);
+                }
+                var order = _orderService.GetById((long)updateOrderDetail.OrderId!);
+                if (order == null)
+                {
+                    return NotFound(ReturnMessage.ORDER_NOT_FOUND);
+                }
+
+                updateOrderDetail = _mapper.Map(request, updateOrderDetail);
+                updateOrderDetail.Commission = order.TotalFees * 5/100;
+                _orderDetailServices.Update(updateOrderDetail);
+                _orderDetailServices.Save();
+
+                return Ok(ReturnMessage.UPDATE_SUCCESS);
             }
             catch (Exception ex)
             {

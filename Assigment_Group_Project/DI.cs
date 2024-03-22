@@ -9,6 +9,7 @@ using Repository.IRepository;
 using Service.IService;
 using Service.Service;
 using Repository.Repository;
+using Service;
 
 namespace Assigment_Group_Project
 {
@@ -68,6 +69,9 @@ namespace Assigment_Group_Project
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
             builder.Services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
+            builder.Services.AddScoped<IStatusRoomRepository, StatusRoomRepository>();
+            builder.Services.AddScoped<IStatusOrderRepository, StatusOrderRepository>();
+            builder.Services.AddScoped<IStatusUserRepository, StatusUserRepository>();
             #endregion
 
             #region DI_Service
@@ -80,6 +84,9 @@ namespace Assigment_Group_Project
             builder.Services.AddScoped<IFeedbackService, FeedbackService>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IOrderDetailServices, OrderDetailServices>();
+            builder.Services.AddScoped<IStatusOrderService, StatusOrderService>();
+            builder.Services.AddScoped<IStatusRoomService, StatusRoomService>();
+            builder.Services.AddScoped<IStatusUserService, StatusUserService>();
             #endregion
 
             builder.Services.AddEndpointsApiExplorer();

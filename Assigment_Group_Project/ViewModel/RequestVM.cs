@@ -27,6 +27,20 @@ namespace Assigment_Group_Project.ViewModel
         public long? VoucherId { get; set; }
         
     }
+    public class OrderDetailRequestVM
+    {
+        public string? Note { get; set; }
+        [Required]
+        public long? OrderId { get; set; }
+        [Required]
+        public long? RoomId { get; set; }
+    }
+    public class OrderDetailUpdateRequestVM
+    {
+        public string? Note { get; set; }
+        [Required]
+        public long? RoomId { get; set; }
+    }
     public class FeedbackRequestVM
     {
         [Required]
