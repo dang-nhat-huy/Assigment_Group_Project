@@ -77,9 +77,25 @@ namespace Service.Service
             _voucher.Save();
         }
 
-        public void Update(Voucher Voucher)
+        public Voucher Update(Voucher Voucher)
         {
+            var listVoucher = _voucher.GetAll();
+            var checkDuplicateCodeinListVoucher = listVoucher.Where(x => x.Code == Voucher.Code).ToList();
+            int varcheck = 0;
+            foreach (var V in checkDuplicateCodeinListVoucher)
+            {
+                if (Voucher.Code == V.Code && Voucher.VoucherId != V.VoucherId)
+                {
+                    varcheck += 1;
+                }
+            }
+            if (varcheck > 0)
+            {
+                return null;
+            }
             _voucher.Update(Voucher);
+            _voucher.Save();
+            return Voucher;
         }
     }
 }
