@@ -111,15 +111,22 @@ namespace Assigment_Group_Project.Controllers
                 //}
                 else
                 {
-                    existVoucher.ExpireDate = new DateTime(Vvoucher.ExpireDay, Vvoucher.ExpireMonth, Vvoucher.ExpireDay, Vvoucher.ExpireHour, Vvoucher.ExpireMinute, 00);
+                    existVoucher.ExpireDate = new DateTime(Vvoucher.ExpireYear, Vvoucher.ExpireMonth, Vvoucher.ExpireDay, Vvoucher.ExpireHour, Vvoucher.ExpireMinute, 00);
                     existVoucher.Code = Vvoucher.Code;
                     existVoucher.Note = Vvoucher.Note;
                     existVoucher.Discount = Vvoucher.Discount;
                 }
-                _service.Update(existVoucher);
-                _service.Save();
-
-                return Ok(_mapper.Map<VoucherViewModel>(existVoucher));
+                var checkUpdate = _service.Update(existVoucher);
+                if(checkUpdate == null)
+                {
+                    return BadRequest(new BaseFailedResponseModel
+                    {
+                        Status = BadRequest().StatusCode,
+                        Message = "Update Fail!"
+                    });
+                }
+                else
+                return Ok(_mapper.Map<VoucherViewModel>(checkUpdate));
             }
             catch (Exception ex)
             {

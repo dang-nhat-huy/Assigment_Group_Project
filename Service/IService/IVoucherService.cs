@@ -13,7 +13,7 @@ namespace Service.IService
         IEnumerable<Voucher> GetAll();
         Voucher? GetById(long id);
         Voucher AddVoucher(Voucher Voucher);
-        void Update(Voucher Voucher);
+        Voucher Update(Voucher Voucher);
         void Delete(Voucher Voucher);
         void Save();
     }
