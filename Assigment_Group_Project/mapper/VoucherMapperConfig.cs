@@ -8,7 +8,13 @@ namespace Assigment_Group_Project.Mapper
     {
         partial void AddVocuherMapperConfig()
         {
-            CreateMap<Voucher, VoucherViewModel>().ReverseMap();
+             CreateMap<Voucher, VoucherViewModel>()
+                .ForMember(des => des.ExpireDay, opt => opt.MapFrom(src => src.ExpireDate.Value.Day.ToString()))
+                .ForMember(des => des.ExpireMonth, opt => opt.MapFrom(src => src.ExpireDate.Value.Month.ToString()))
+                .ForMember(des => des.ExpireYear, opt => opt.MapFrom(src => src.ExpireDate.Value.Year.ToString()))
+                .ForMember(des => des.ExpireHour, opt => opt.MapFrom(src => src.ExpireDate.Value.Hour.ToString()))
+                .ForMember(des => des.ExpireMinute, opt => opt.MapFrom(src => src.ExpireDate.Value.Minute.ToString()))
+                .ReverseMap();
         }
     }
 }
