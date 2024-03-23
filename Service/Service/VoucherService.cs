@@ -1,6 +1,8 @@
-﻿using BusinessObject.Models;
+﻿using BusinessObject.CustomMessage;
+using BusinessObject.Models;
 using Repository.IRepository;
 using Service.IService;
+using Service.ReponseModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +18,24 @@ namespace Service.Service
         {
             _voucher = voucher;
         }
-        public void Add(Voucher Voucher)
+        public Voucher AddVoucher(Voucher Voucher)
         {
+            var listV = _voucher.GetAll();
+            var checkDuplicateCode = listV.FirstOrDefault(x => x.Code == Voucher.Code);
+
+            if (!(checkDuplicateCode == null))
+            {
+                return null;
+            }
+            else if (Voucher.ExpireDate <= DateTime.Now)
+            {
+                return null;
+            }
+
             _voucher.Add(Voucher);
+            return Voucher;
         }
+
 
         public void Delete(Voucher Voucher)
         {

@@ -4,6 +4,7 @@ using BusinessObject.CustomMessage;
 using BusinessObject.Models;
 using Microsoft.AspNetCore.Mvc;
 using Service.IService;
+using Service.ReponseModel;
 
 namespace Assigment_Group_Project.Controllers
 {
@@ -59,6 +60,7 @@ namespace Assigment_Group_Project.Controllers
         public IActionResult AddVoucher(VoucherViewModel Vvoucher)
         {
             var voucher = _mapper.Map<Voucher>(Vvoucher);
+            voucher.ExpireDate = new DateTime(Vvoucher.ExpireYear, Vvoucher.ExpireMonth, Vvoucher.ExpireDay, Vvoucher.ExpireHour, Vvoucher.ExpireMinute, 00);
             try
             {
                 if (!ModelState.IsValid)
@@ -66,18 +68,25 @@ namespace Assigment_Group_Project.Controllers
                     return BadRequest(ReturnMessage.BAD_REQUEST);
                 }
 
-                _service.Add(voucher);
-                _service.Save();
-
-                return Ok(_mapper.Map<VoucherViewModel>(voucher));
+                var checkAdd = _service.AddVoucher(voucher);
+                if (checkAdd == null)
+                {
+                    return BadRequest(new BaseFailedResponseModel
+                    {
+                        Status = BadRequest().StatusCode,
+                        Message = "Add fail!",
+                    });
+                }
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
+            _service.Save();
+            return Ok(voucher);
         }
         [HttpPatch("Update/{id}", Name = "Update Existing Voucher")]
-        public IActionResult UpdateVoucher([FromRoute] long id, VoucherViewModel voucherV)
+        public IActionResult UpdateVoucher([FromRoute] long id, VoucherViewModel Vvoucher)
         {
             try
             {
@@ -102,10 +111,10 @@ namespace Assigment_Group_Project.Controllers
                 //}
                 else
                 {
-                    existVoucher.ExpireDate = voucherV.ExpireDate;
-                    existVoucher.Code = voucherV.Code;
-                    existVoucher.Note = voucherV.Note;
-                    existVoucher.Discount = voucherV.Discount;
+                    existVoucher.ExpireDate = new DateTime(Vvoucher.ExpireDay, Vvoucher.ExpireMonth, Vvoucher.ExpireDay, Vvoucher.ExpireHour, Vvoucher.ExpireMinute, 00);
+                    existVoucher.Code = Vvoucher.Code;
+                    existVoucher.Note = Vvoucher.Note;
+                    existVoucher.Discount = Vvoucher.Discount;
                 }
                 _service.Update(existVoucher);
                 _service.Save();
