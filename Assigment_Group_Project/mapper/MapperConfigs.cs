@@ -20,6 +20,7 @@ namespace Assigment_Group_Project.Mapper
             AddUserMapperConfig();
             AddUserTaskMapperConfig();
             AddVocuherMapperConfig();
+            AddRoomMapperConfig();
         }
         partial void AddCategoryMapperConfig();
         partial void AddFeedBackMapperConfig();
@@ -34,5 +35,6 @@ namespace Assigment_Group_Project.Mapper
         partial void AddUserMapperConfig();
         partial void AddUserTaskMapperConfig();
         partial void AddVocuherMapperConfig();
+        partial void AddRoomMapperConfig();
     }
 }

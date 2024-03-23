@@ -50,12 +50,27 @@ namespace Assigment_Group_Project.ViewModel
         public long? UserId { get; set; }
     }
 
-    public partial class ServiceRequestVM
+    public class ServiceRequestVM
     {
         [Required]
         [MinLength(1), MaxLength(50)]
         public string? ServiceName { get; set; }
         [Range(1000, 100000000)]
         public double? Fee { get; set; }
+    }
+    public class RoomRequestVM
+    {
+        [Required]
+        [MinLength(1)]
+        public string? RoomName { get; set; }
+        public string? Description { get; set; }
+        [Required]
+        public string? Location { get; set; }
+        [Required]
+        [Range(1, double.MaxValue)]
+        public double? Price { get; set; }
+        [Required]
+        [Range(1, int.MaxValue)]
+        public int? Capacity { get; set; }
     }
 }

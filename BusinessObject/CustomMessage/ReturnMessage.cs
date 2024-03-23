@@ -20,6 +20,7 @@ namespace BusinessObject.CustomMessage
         public const string FAIL = "Fail";
         public const string EMPTY_LIST = "Empty List";
         public const string NULL_DATA = "Data Is Null";
+        public const string INVALID_DATA = "Invalid Data";
 
         // Common error messages
         public const string NOT_FOUND = "Not Found";
@@ -35,6 +36,7 @@ namespace BusinessObject.CustomMessage
         public const string VOUCHER_NOT_FOUND = "Voucher " + NOT_FOUND;
         public const string USER_NOT_FOUND = "User " + NOT_FOUND;
         public const string ORDER_DETAIL_NOT_FOUND = "Order Detail " + NOT_FOUND;
+        public const string ROOM_NOT_FOUND = "Room " + NOT_FOUND;
 
         // Error for duplicate important data
         public const string DUPLICATE_EMAIL = "Duplicate Email";
