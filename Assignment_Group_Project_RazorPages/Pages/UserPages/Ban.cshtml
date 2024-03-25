@@ -9,56 +9,57 @@
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>DelUser</h4>
+    <h4>BanUser</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DelUser.Fullname)
+            @Html.DisplayNameFor(model => model.BanUser.Fullname)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DelUser.Fullname)
+            @Html.DisplayFor(model => model.BanUser.Fullname)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DelUser.Email)
+            @Html.DisplayNameFor(model => model.BanUser.Email)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DelUser.Email)
+            @Html.DisplayFor(model => model.BanUser.Email)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DelUser.Password)
+            @Html.DisplayNameFor(model => model.BanUser.Phone)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DelUser.Password)
+            @Html.DisplayFor(model => model.BanUser.Phone)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DelUser.Phone)
+            @Html.DisplayNameFor(model => model.BanUser.DoB)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DelUser.Phone)
+            @Html.DisplayFor(model => model.BanUser.DoB)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DelUser.DoB)
+            @Html.DisplayNameFor(model => model.BanUser.Role)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DelUser.DoB)
+            @Html.DisplayFor(model => model.BanUser.Role)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DelUser.Role)
+            @Html.DisplayNameFor(model => model.BanUser.StatusUser)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DelUser.Role)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DelUser.StatusUser)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DelUser.StatusUser!.StatusName)
+            @Html.DisplayFor(model => model.BanUser.StatusUser!.StatusName)
         </dd>
     </dl>
     
     <form method="post">
-        <input type="hidden" asp-for="DelUser.UserId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <input type="hidden" asp-for="BanUser.UserId" />
+        @if(Model.BanUser.StatusUserId == 1)
+        {
+            <input type="submit" value="Ban" class="btn btn-danger" />
+        }
+        else
+        {
+            <input type="submit" value="Unban" class="btn btn-danger" />
+        }
         <a asp-page="./Index">Back to List</a>
     </form>
 </div>

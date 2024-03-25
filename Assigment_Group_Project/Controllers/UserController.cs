@@ -104,6 +104,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpGet("Get/{id}", Name = "Get Account By ID")]
+        [Authorize(Roles = "Admin,Manager,Staff,Customer")]
         public IActionResult GetById([FromRoute] long id)
         {
             try
@@ -195,7 +196,8 @@ namespace Assigment_Group_Project.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPatch("UpdateRoleByAdmin/{id}", Name = "Update Profile By Admin")]
+        [HttpPatch("UpdateRoleByManager/{id}", Name = "Update Profile By Admin")]
+        [Authorize(Roles = "Manager")]
         public IActionResult UpdatRoleByAdmin([FromRoute] long id, string role)
         {
             try
@@ -223,6 +225,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpPatch("ChangeStatus/{id}", Name = "Ban/Unban A User")]
+        [Authorize(Roles = "Manager")]
         public IActionResult ChangeUserStatus([FromRoute] long id)
         {
             try

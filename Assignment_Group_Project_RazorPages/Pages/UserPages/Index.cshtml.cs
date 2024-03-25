@@ -29,7 +29,7 @@ namespace Assignment_Group_Project_RazorPages.Pages.UserPages
                     TempData["error"] = "You need to login to access this page";
                     return RedirectToPage("../Logout");
                 }
-                if (!role.Equals("Admin"))
+                if (!role.Equals("Manager"))
                 {
                     TempData["error"] = "You don't have access to this page";
                     return RedirectToPage("../Logout");
@@ -76,7 +76,7 @@ namespace Assignment_Group_Project_RazorPages.Pages.UserPages
                 IList<User> users = new List<User>();
 
                 string? jwt = Request.Cookies["jwt"];
-                jwt = jwt.ToString();
+                jwt = jwt!.ToString();
                 var quantity = int.MaxValue;
                 string url = $"http://localhost:5201/User/GetAll?page=1&quantity={quantity}";
                 var client = new HttpClient();
