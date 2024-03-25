@@ -147,9 +147,12 @@ namespace Assigment_Group_Project
                 options.AddPolicy(name: "_myAllowSpecificOrigins",
                                   policy =>
                                   {
-                                      policy.AllowAnyOrigin()
-                                      .AllowAnyHeader()
-                                      .AllowAnyMethod();
+                                      policy.WithOrigins("http://localhost:5224/")
+                                            .AllowAnyMethod()
+                                            .AllowAnyHeader()
+                                            .SetIsOriginAllowedToAllowWildcardSubdomains()
+                                            .AllowCredentials()
+                                            .SetIsOriginAllowed(_ => true);
                                   });
             });
 

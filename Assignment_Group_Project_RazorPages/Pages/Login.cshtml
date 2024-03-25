@@ -1,0 +1,41 @@
+﻿@page
+@model Assignment_Group_Project_RazorPages.Pages.LoginModel
+@{
+}
+<h1>Login</h1>
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div class="form-group">
+                <label asp-for="User.Email" class="control-label"></label>
+                <input asp-for="User.Email" class="form-control" required autocomplete="on" />
+                <span asp-validation-for="User.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="User.Password" class="control-label"></label>
+                <input asp-for="User.Password" class="form-control" type="password" required autocomplete="on" />
+                <span asp-validation-for="User.Password" class="text-danger"></span>
+            </div>
+            @if (TempData["error"] != null)
+            {
+                <div class="text-danger">
+                    <h3>@TempData["error"]</h3>
+                </div>
+                TempData.Clear();
+            }
+            @if (TempData["success"] != null)
+            {
+                <div class="text-success">
+                    <h3>@TempData["success"]</h3>
+                </div>
+                TempData.Clear();
+            }
+            <div class="form-group">
+                Don't have an account yet? <a asp-page="./SignUp">Sign Up</a>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Login" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
