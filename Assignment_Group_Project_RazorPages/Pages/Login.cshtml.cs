@@ -1,4 +1,5 @@
 using Assignment_Group_Project_RazorPages.ViewModel;
+using BusinessObject.CustomMessage;
 using BusinessObject.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,7 +11,7 @@ namespace Assignment_Group_Project_RazorPages.Pages
     public class LoginModel : PageModel
     {
         [BindProperty]
-        public LoginUserViewModel User { get; set; } = null!;
+        public LoginUserViewModel LoginUser { get; set; } = null!;
         public IActionResult OnGet()
         {
             var role = HttpContext.Session.GetString("Role");
@@ -32,8 +33,13 @@ namespace Assignment_Group_Project_RazorPages.Pages
         {
             try
             {
-                var email = User.Email;
-                var password = User.Password;
+                if (!ModelState.IsValid)
+                {
+                    throw new Exception();
+                }
+
+                var email = LoginUser.Email;
+                var password = LoginUser.Password;
                 string url = $"http://localhost:5201/User/Login?email={email}&password={password}";
 
                 var client = new HttpClient();
@@ -61,7 +67,7 @@ namespace Assignment_Group_Project_RazorPages.Pages
                     Response.Cookies.Append("jwt", jwt, cookieOptions);
 
                     //Set Session
-                    HttpContext.Session.SetString("Role", role);
+                    HttpContext.Session.SetString("role", role);
 
                     TempData["success"] = "Login Successfully";
                     if (role.Equals("Admin"))
@@ -84,9 +90,9 @@ namespace Assignment_Group_Project_RazorPages.Pages
                     return Page();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                TempData["error"] = "An error occurred while processing your request. Please try again later";
+                TempData["error"] = ex.Message;
                 return Page();
             }
         }

@@ -7,14 +7,14 @@
     <div class="col-md-4">
         <form method="post">
             <div class="form-group">
-                <label asp-for="User.Email" class="control-label"></label>
-                <input asp-for="User.Email" class="form-control" required autocomplete="on" />
-                <span asp-validation-for="User.Email" class="text-danger"></span>
+                <label asp-for="LoginUser.Email" class="control-label"></label>
+                <input asp-for="LoginUser.Email" class="form-control" required autocomplete="on" />
+                <span asp-validation-for="LoginUser.Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="User.Password" class="control-label"></label>
-                <input asp-for="User.Password" class="form-control" type="password" required autocomplete="on" />
-                <span asp-validation-for="User.Password" class="text-danger"></span>
+                <label asp-for="LoginUser.Password" class="control-label"></label>
+                <input asp-for="LoginUser.Password" class="form-control" type="password" required autocomplete="on" />
+                <span asp-validation-for="LoginUser.Password" class="text-danger"></span>
             </div>
             @if (TempData["error"] != null)
             {
