@@ -10,7 +10,7 @@ using BusinessObject.Models;
 
 namespace Assignment_Group_Project_RazorPages.Pages.UserPages
 {
-    public class EditModel : PageModel
+    public class ChangeRoleModel : PageModel
     {
         [BindProperty]
         public User EditUser { get; set; } = default!;

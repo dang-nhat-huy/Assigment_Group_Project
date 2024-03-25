@@ -20,9 +20,9 @@ namespace Assignment_Group_Project_RazorPages.Pages
             {
                 return Page();
             }
-            if (role.Equals("Admin"))
+            if (role.Equals("Manager"))
             {
-                return Page();
+                return RedirectToPage("./UserPages/Index");
             }
             else
             {
@@ -70,7 +70,7 @@ namespace Assignment_Group_Project_RazorPages.Pages
                     HttpContext.Session.SetString("role", role);
 
                     TempData["success"] = "Login Successfully";
-                    if (role.Equals("Admin"))
+                    if (role.Equals("Manager"))
                     {
                         return RedirectToPage("./UserPages/Index");
                     }

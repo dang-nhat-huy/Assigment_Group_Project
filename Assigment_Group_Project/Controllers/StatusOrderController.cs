@@ -15,7 +15,7 @@ namespace Assigment_Group_Project.Controllers
             _statusOrderService = statusOrderService;
         }
         [HttpGet("GetAll", Name = "Get All Order Status")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Manager")]
         public IActionResult GetAll(int? page = 1, int? quantity = 10)
         {
             try

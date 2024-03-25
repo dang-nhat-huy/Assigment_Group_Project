@@ -86,7 +86,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpGet("GetAll", Name = "Get All Accounts")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Manager")]
         public IActionResult GetAllAccounts(int? page = 1, int? quantity = 10)
         {
             try

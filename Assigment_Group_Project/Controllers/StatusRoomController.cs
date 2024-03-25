@@ -15,7 +15,7 @@ namespace Assigment_Group_Project.Controllers
             _statusRoomService = statusRoomService;
         }
         [HttpGet("GetAll", Name = "Get All Room Status")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Manager")]
         public IActionResult GetAll(int? page = 1, int? quantity = 10)
         {
             try
