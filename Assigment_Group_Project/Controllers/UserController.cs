@@ -2,6 +2,7 @@
 using AutoMapper;
 using BusinessObject.CustomMessage;
 using BusinessObject.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Service.IService;
@@ -85,6 +86,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpGet("GetAll", Name = "Get All Accounts")]
+        [Authorize(Roles = "Admin")]
         public IActionResult GetAllAccounts(int? page = 1, int? quantity = 10)
         {
             try

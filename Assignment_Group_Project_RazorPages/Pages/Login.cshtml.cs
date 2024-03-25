@@ -72,7 +72,7 @@ namespace Assignment_Group_Project_RazorPages.Pages
                     TempData["success"] = "Login Successfully";
                     if (role.Equals("Admin"))
                     {
-                        return Page();
+                        return RedirectToPage("./UserPages/Index");
                     }
                     else if(role.Equals("Staff"))
                     {

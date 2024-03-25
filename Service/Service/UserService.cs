@@ -47,7 +47,7 @@ namespace Service.Service
             }
 
             int skip = (page.GetValueOrDefault(defaultPage) - 1) * quantity.GetValueOrDefault(defaultQuantity);
-            return _userRepository.GetAllWithInclude("Status")
+            return _userRepository.GetAllWithInclude("StatusUser")
                 .Skip(skip)
                 .Take((int)quantity!);
         }
@@ -77,7 +77,7 @@ namespace Service.Service
             }
 
             int skip = (page.GetValueOrDefault(defaultPage) - 1) * quantity.GetValueOrDefault(defaultQuantity);
-            return _userRepository.GetAllWithInclude("Status")
+            return _userRepository.GetAllWithInclude("StatusUser")
                 .Where(x => x.Email!.Contains(email))
                 .Skip(skip)
                 .Take((int)quantity!);
