@@ -1,0 +1,51 @@
+﻿@page
+@model Assignment_Group_Project_RazorPages.Pages.ServicePages.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Service[0].ServiceName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Service[0].Fee)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Service) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ServiceName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fee)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.ServiceId" class="btn btn-warning">Edit</a> |
+                <a asp-page="./Delete" asp-route-id="@item.ServiceId" class="btn btn-warning">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<div class="align-middle">
+    <ul class="pagination">
+        @for (int b = 1; b <= Model.Count; b++)
+        {
+            <li class="page-item @(b == Model.Index ? "active" : "")">
+                <a asp-page="./Index" asp-route-Index="@b" class="page-link">@b</a>
+            </li>
+        }
+    </ul>
+</div>

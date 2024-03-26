@@ -4,18 +4,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using BusinessObject.Models;
 using Newtonsoft.Json;
-using System.Text;
 
-namespace Assignment_Group_Project_RazorPages.Pages.RoomPages
+namespace Assignment_Group_Project_RazorPages.Pages.MenuPages
 {
-    public class CreateModel : PageModel
+    public class IndexModel : PageModel
     {
-        [BindProperty]
-        public Room Room { get; set; } = default!;
-        public IList<StatusRoom> StatusRooms { get; set; } = default!;
+        public IList<Menu> Menu { get;set; } = default!;
+        [BindProperty(SupportsGet = true)]
+        public int Index { get; set; } = 1;
+        public double Count { get; set; }
         public async Task<IActionResult> OnGetAsync()
         {
             try
@@ -33,66 +33,9 @@ namespace Assignment_Group_Project_RazorPages.Pages.RoomPages
                     return RedirectToPage("../Logout");
                 }
 
-                StatusRooms = await GetAllRoomStatusAsync();
-                ViewData["Status"] = new SelectList(StatusRooms, "StatusRoomId", "StatusName");
-
-                return Page();
-            }
-            catch (Exception ex)
-            {
-                TempData["error"] = ex.Message;
-                return Page();
-            }
-        }
-        public async Task<IActionResult> OnPostAsync()
-        {
-            try
-            {
-                string? jwt = Request.Cookies["jwt"]!.ToString();
-                string url = $"http://localhost:5201/Room/Add";
-                string jsonRoom = JsonConvert.SerializeObject(Room);
-                var client = new HttpClient();
-                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {jwt}");
-                HttpRequestMessage request = new HttpRequestMessage
-                {
-                    RequestUri = new Uri(url),
-                    Method = HttpMethod.Post,
-                    Content = new StringContent(jsonRoom, Encoding.UTF8, "application/json")
-                };
-                HttpResponseMessage response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    string msg = await response.Content.ReadAsStringAsync();
-                    TempData["success"] = msg;
-                    return RedirectToPage("./Index");
-                }
-                else
-                {
-                    string msg = await response.Content.ReadAsStringAsync();
-                    TempData["error"] = msg;
-                    StatusRooms = await GetAllRoomStatusAsync();
-                    ViewData["Status"] = new SelectList(StatusRooms, "StatusRoomId", "StatusName");
-                }
-                return Page();
-            }
-            catch (Exception ex)
-            {
-                StatusRooms = await GetAllRoomStatusAsync();
-                ViewData["Status"] = new SelectList(StatusRooms, "StatusRoomId", "StatusName");
-                TempData["error"] = ex.Message;
-                return Page();
-            }
-        }
-        private async Task<IList<StatusRoom>> GetAllRoomStatusAsync()
-        {
-            try
-            {
-                IList<StatusRoom> status = new List<StatusRoom>();
-
-                string? jwt = Request.Cookies["jwt"];
-                jwt = jwt!.ToString();
-                string url = $"http://localhost:5201/StatusRoom/GetAll";
+                jwt = jwt.ToString();
+                var quantity = 10;
+                string url = $"http://localhost:5201/Menu/GetAll?page={Index}&quantity={quantity}";
                 var client = new HttpClient();
                 client.DefaultRequestHeaders.Add("Authorization", $"Bearer {jwt}");
                 HttpRequestMessage request = new HttpRequestMessage
@@ -105,18 +48,62 @@ namespace Assignment_Group_Project_RazorPages.Pages.RoomPages
                 if (response.IsSuccessStatusCode)
                 {
                     string responseBody = await response.Content.ReadAsStringAsync();
-                    status = JsonConvert.DeserializeObject<IList<StatusRoom>>(responseBody)!;
+                    Menu = JsonConvert.DeserializeObject<IList<Menu>>(responseBody)!;
                 }
                 else
                 {
-                    status = new List<StatusRoom>();
+                    string msg = await response.Content.ReadAsStringAsync();
+                    TempData["error"] = msg;
                 }
 
-                return status;
+                Count = await CountMaxPage();
+
+                return Page();
+            }
+            catch (Exception ex)
+            {
+                TempData["error"] = ex.Message;
+                return Page();
+            }
+        }
+        private async Task<double> CountMaxPage()
+        {
+            try
+            {
+                double count = 1;
+                IList<User> users = new List<User>();
+
+                string? jwt = Request.Cookies["jwt"];
+                jwt = jwt!.ToString();
+                var quantity = int.MaxValue;
+                string url = $"http://localhost:5201/Menu/GetAll?page=1&quantity={quantity}";
+                var client = new HttpClient();
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {jwt}");
+                HttpRequestMessage request = new HttpRequestMessage
+                {
+                    RequestUri = new Uri(url),
+                    Method = HttpMethod.Get
+                };
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    users = JsonConvert.DeserializeObject<IList<User>>(responseBody)!;
+                    count = Math.Ceiling((double)users.Count / 10);
+                }
+                else
+                {
+                    count = 1;
+                }
+
+                //Count = await CountMaxPage();
+
+                return count;
             }
             catch (Exception)
             {
-                return new List<StatusRoom>();
+                return 1;
             }
         }
     }

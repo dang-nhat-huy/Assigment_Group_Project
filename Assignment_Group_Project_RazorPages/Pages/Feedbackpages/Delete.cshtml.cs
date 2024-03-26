@@ -7,13 +7,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BusinessObject.Models;
 
-namespace Assignment_Group_Project_RazorPages.Pages.RoomPages
+namespace Assignment_Group_Project_RazorPages.Pages.Feedbackpages
 {
-    public class DetailsModel : PageModel
+    public class DeleteModel : PageModel
     {
-
-
-        public Room Room { get; set; } = default!; 
-
+        [BindProperty]
+        public Feedback Feedback { get; set; } = default!;
     }
 }

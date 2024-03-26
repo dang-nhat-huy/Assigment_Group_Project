@@ -40,7 +40,7 @@ namespace Assigment_Group_Project.Controllers
         }
 
         [HttpGet("GetAll")]
-        //[Authorize(Roles = "Admin,Staff,Customer")]
+        [Authorize(Roles = "Admin,Manager,Staff,Customer")]
         public IActionResult GetAllMenuItems(int? page = 1, int? quantity = 10)
         {
             try

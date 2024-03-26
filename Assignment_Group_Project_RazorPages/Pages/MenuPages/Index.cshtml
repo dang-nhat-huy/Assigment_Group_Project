@@ -1,0 +1,57 @@
+﻿@page
+@model Assignment_Group_Project_RazorPages.Pages.MenuPages.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Menu[0].MenuItem)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Menu[0].Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Menu[0].Categories)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Menu) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MenuItem)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Categories!.CategoriesName)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.MenuId" class="btn btn-warning">Edit</a> |
+                <a asp-page="./Delete" asp-route-id="@item.MenuId" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<div class="align-middle">
+    <ul class="pagination">
+        @for (int b = 1; b <= Model.Count; b++)
+        {
+            <li class="page-item @(b == Model.Index ? "active" : "")">
+                <a asp-page="./Index" asp-route-Index="@b" class="page-link">@b</a>
+            </li>
+        }
+    </ul>
+</div>

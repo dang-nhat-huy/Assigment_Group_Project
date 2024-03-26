@@ -13,7 +13,6 @@ namespace BusinessObject.Models
         public string? FbContent { get; set; }
         [Required]
         public long? UserId { get; set; }
-        [JsonIgnore]
         public virtual User? User { get; set; }
     }
 }

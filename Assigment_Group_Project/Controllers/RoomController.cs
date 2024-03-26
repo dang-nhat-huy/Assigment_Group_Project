@@ -2,6 +2,7 @@
 using AutoMapper;
 using BusinessObject.CustomMessage;
 using BusinessObject.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.IService;
 
@@ -21,6 +22,7 @@ namespace Assigment_Group_Project.Controllers
             _statusRoomService = statusRoomService;
         }
         [HttpGet("GetAll", Name = "Get All Rooms")]
+        [Authorize(Roles = "Admin,Manager,Staff,Customer")]
         public IActionResult GetAllRooms(int? page = 1, int? quantity = 10)
         {
             try
@@ -38,6 +40,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpGet("Get/{id}", Name = "Get Room By ID")]
+        [Authorize(Roles = "Admin,Manager,Staff,Customer")]
         public IActionResult GetById([FromRoute] long id)
         {
             try
@@ -55,6 +58,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpPatch("ChangeStatus/{id}", Name = "Change A Room Status")]
+        [Authorize(Roles = "Manager")]
         public IActionResult ChangeStatus([FromRoute] long id, long statusId)
         {
             try
@@ -71,6 +75,7 @@ namespace Assigment_Group_Project.Controllers
                     return BadRequest(ReturnMessage.INVALID_DATA);
                 }
 
+                room.StatusRoomId = statusId;
                 _roomService.Update(room);
                 _roomService.Save();
 

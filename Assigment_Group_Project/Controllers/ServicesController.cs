@@ -1,6 +1,7 @@
 ﻿using Assigment_Group_Project.ViewModel;
 using BusinessObject.CustomMessage;
 using BusinessObject.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.IService;
 using Service.Service;
@@ -38,7 +39,7 @@ namespace Assigment_Group_Project.Controllers
         }
 
         [HttpGet("GetAll")]
-        //[Authorize(Roles = "Admin,Staff,Customer")]
+        [Authorize(Roles = "Admin,Manager,Staff,Customer")]
         public IActionResult GetAllServices(int? page = 1, int? quantity = 10)
         {
             try

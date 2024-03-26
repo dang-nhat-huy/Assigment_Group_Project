@@ -5,8 +5,17 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
+<h1>List of Rooms</h1>
+@if(TempData["error"] != null)
+{
+    <h3 class="text-danger">@TempData["error"]</h3>
+    TempData.Clear();
+}
+@if(TempData["success"] != null)
+{
+    <h3 class="text-success">@TempData["success"]</h3>
+    TempData.Clear();
+}
 <p>
     <a asp-page="Create">Create New</a>
 </p>
@@ -53,14 +62,23 @@
                 @Html.DisplayFor(modelItem => item.Capacity)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.StatusRoom.StatusName)
+                @Html.DisplayFor(modelItem => item.StatusRoom!.StatusName)
             </td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.RoomId">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.RoomId">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.RoomId">Delete</a>
+                <a asp-page="./Edit" asp-route-id="@item.RoomId" class="btn btn-warning">Edit</a>
+                <a asp-page="./ChangeStatus" asp-route-id="@item.RoomId" class="btn btn-danger">Change Status</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+<div class="align-middle">
+    <ul class="pagination">
+        @for (int b = 1; b <= Model.Count; b++)
+        {
+            <li class="page-item @(b == Model.Index ? "active" : "")">
+                <a asp-page="./Index" asp-route-Index="@b" class="page-link">@b</a>
+            </li>
+        }
+    </ul>
+</div>

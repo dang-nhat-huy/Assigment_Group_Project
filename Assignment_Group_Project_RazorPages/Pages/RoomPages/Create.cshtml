@@ -39,8 +39,9 @@
                 <span asp-validation-for="Room.Capacity" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Room.StatusRoomId" class="control-label"></label>
-                <select asp-for="Room.StatusRoomId" class ="form-control" asp-items="ViewBag.StatusRoomId"></select>
+                <label asp-for="Room.StatusRoomId" class="control-label">Room Status</label>
+                <select asp-for="Room.StatusRoomId" class ="form-control" asp-items="ViewBag.Status"></select>
+                <span asp-validation-for="Room.StatusRoomId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

@@ -47,7 +47,7 @@ namespace Service.Service
             }
 
             int skip = (page.GetValueOrDefault(defaultPage) - 1) * quantity.GetValueOrDefault(defaultQuantity);
-            return _feedbackRepository.GetAll()
+            return _feedbackRepository.GetAllWithInclude("User")
                 .Skip(skip)
                 .Take((int)quantity!);
         }
