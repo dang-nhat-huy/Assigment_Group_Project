@@ -2,6 +2,7 @@
 using AutoMapper;
 using BusinessObject.CustomMessage;
 using BusinessObject.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.IService;
 
@@ -22,6 +23,7 @@ namespace Assigment_Group_Project.Controllers
         }
 
         [HttpGet("GetAll", Name = "Get All Orders")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         public IActionResult GetAllOrders(int? page = 1, int? quanity = 10) {
             try
             {
@@ -38,6 +40,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpGet("GetAllActive", Name = "Get All Active Orders")]
+        [Authorize(Roles = "Admin,Manager,Staff,Customer")]
         public IActionResult GetAllActiveOrders(int? page = 1, int? quanity = 10)
         {
             try
@@ -55,6 +58,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpPost("Add", Name = "Create New Order From User")]
+        [Authorize(Roles = "Customer")]
         public IActionResult CreateOrderUser(OrderRequestVM order)
         {
             try
@@ -77,6 +81,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpPatch("Update/{id}", Name = "Update Order From User")]
+        [Authorize(Roles = "Customer")]
         public IActionResult UpdateOrder([FromRoute] long id, OrderRequestVM order)
         {
             try
@@ -103,6 +108,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpPatch("ChangeStatus/{id}", Name = "Change Order Status")]
+        [Authorize(Roles = "Manager,Staff")]
         public IActionResult ChangeStatus([FromRoute] long id, long statusId)
         {
             try
@@ -129,6 +135,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpGet("Get/{id}")]
+        [Authorize(Roles = "Manager,Staff")]
         public IActionResult GetOrderById([FromRoute] long id)
         {
             try
@@ -146,6 +153,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpGet("GetOrderDetail/orderId/{orderId}")]
+        [Authorize(Roles = "Admin,Manager,Staff,Customer")]
         public IActionResult GetOrderDetailByOrderId([FromRoute] long orderId)
         {
             try
@@ -163,6 +171,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpGet("GetOrderDetail/orderDetailId/{id}")]
+        [Authorize(Roles = "Admin,Manager,Staff,Customer")]
         public IActionResult GetOrderDetailById([FromRoute] long id)
         {
             try
@@ -180,6 +189,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpPost("AddOrderDetail", Name = "Create New Order Detail From User")]
+        [Authorize(Roles = "Customer")]
         public IActionResult CreateOrderDetailUser(OrderDetailRequestVM request)
         {
             try
@@ -207,6 +217,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpPatch("UpdateOrderDetail/{id}", Name = "Update Order Detail From User")]
+        [Authorize(Roles = "Customer")]
         public IActionResult UpdateOrderDetail([FromRoute] long id, OrderDetailUpdateRequestVM request)
         {
             try

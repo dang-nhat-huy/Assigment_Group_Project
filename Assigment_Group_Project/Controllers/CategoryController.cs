@@ -2,6 +2,7 @@
 using BusinessObject.CustomMessage;
 using Microsoft.AspNetCore.Mvc;
 using Service.IService;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Assigment_Group_Project.Controllers
 {
@@ -15,6 +16,7 @@ namespace Assigment_Group_Project.Controllers
             _categoryService = categoryService;
         }
         [HttpGet("GetAll", Name = "Get All Categories")]
+        [Authorize(Roles = "Admin,Manager,Staff,Customer")]
         public IActionResult GetAllCategories(int? page = 1, int? quantity = 10)
         {
             try
@@ -32,6 +34,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpGet("Get/{id}", Name = "Get Category By ID")]
+        [Authorize(Roles = "Admin,Manager,Staff,Customer")]
         public IActionResult GetCategoryById([FromRoute] long id)
         {
             try
@@ -49,6 +52,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpPost("Add", Name = "Add New Category")]
+        [Authorize(Roles = "Manager")]
         public IActionResult AddCategory(string name)
         {
             try
@@ -81,6 +85,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpPatch("Update/{id}", Name = "Update Existing Category")]
+        [Authorize(Roles = "Manager")]
         public IActionResult UpdateCategory([FromRoute] long id, string name)
         {
             try
@@ -125,6 +130,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpDelete("Delete/{id}", Name = "Delete Category")]
+        [Authorize(Roles = "Manager")]
         public IActionResult DeleteCategory([FromRoute] long id)
         {
             try

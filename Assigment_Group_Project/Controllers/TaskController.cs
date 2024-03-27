@@ -1,6 +1,7 @@
 ﻿using Assigment_Group_Project.ViewModel;
 using AutoMapper;
 using BusinessObject.CustomMessage;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.IService;
 using Task = BusinessObject.Models.Task;
@@ -19,6 +20,7 @@ namespace Assigment_Group_Project.Controllers
             _mapper = mapper;
         }
         [HttpGet("GetAll", Name = "Get All Tasks")]
+        [Authorize(Roles = "Admin,Manager,Staff,Customer")]
         public IActionResult GetAllTasks(int? page = 1, int? quantity = 10) {
             try
             {
@@ -35,6 +37,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpGet("Get/{id}", Name = "Get Task By Id")]
+        [Authorize(Roles = "Admin,Manager,Staff,Customer")]
         public IActionResult GetTaskById([FromRoute] long id)
         {
             try
@@ -52,6 +55,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpPost("Add", Name = "Add New Task")]
+        [Authorize(Roles = "Manager")]
         public IActionResult AddTask(TaskRequestVM task)
         {
             try
@@ -73,6 +77,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpPatch("Update/{id}", Name = "Update Existing Task")]
+        [Authorize(Roles = "Manager")]
         public IActionResult UpdateTask([FromRoute] long id, TaskRequestVM task)
         {
             try
@@ -108,6 +113,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpDelete("Delete/{id}", Name = "Delete Task")]
+        [Authorize(Roles = "Manager")]
         public IActionResult DeleteTask([FromRoute] long id)
         {
             try

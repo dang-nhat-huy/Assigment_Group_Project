@@ -122,6 +122,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpGet("SearchByEmail", Name = "Search Account By Email")]
+        [Authorize(Roles = "Admin,Manager,Staff,Customer")]
         public IActionResult SearchByEmail(string email, int? page = 1, int? quantity = 10) 
         { 
             try
@@ -138,7 +139,8 @@ namespace Assigment_Group_Project.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPost("Create", Name = "Create New User By Admin")]
+        [HttpPost("Create", Name = "Create New User By Manager")]
+        [Authorize(Roles = "Manager")]
         public IActionResult CreateUser(UserCreateByAdminVM user)
         {
             try
@@ -161,6 +163,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpPatch("UpdateByUser/{id}", Name = "Update Profile By User")]
+        [Authorize(Roles = "Customer")]
         public IActionResult UpdateByUser([FromRoute] long id ,UserUpdateByCustomerVM user)
         {
             try
@@ -260,6 +263,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpDelete("Delete/{id}", Name = "Delete A User")]
+        [Authorize(Roles = "Manager,Customer")]
         public IActionResult DeleteUser([FromRoute] long id)
         {
             try

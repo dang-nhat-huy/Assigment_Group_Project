@@ -87,6 +87,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpDelete("Delete/{id}", Name = "Delete A Room")]
+        [Authorize(Roles = "Manager")]
         public IActionResult Delete([FromRoute] long id)
         {
             try
@@ -108,6 +109,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpPost("Add", Name = "Add A Room")]
+        [Authorize(Roles = "Manager")]
         public IActionResult Add(RoomRequestVM request)
         {
             try
@@ -136,6 +138,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpPatch("Update/{id}", Name = "Update A Room")]
+        [Authorize(Roles = "Manager,Staff")]
         public IActionResult Update([FromRoute] long id, RoomRequestVM request)
         {
             try

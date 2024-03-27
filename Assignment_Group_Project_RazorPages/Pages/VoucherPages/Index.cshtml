@@ -1,0 +1,64 @@
+﻿@page
+@model Assignment_Group_Project_RazorPages.Pages.VoucherPages.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Voucher[0].Note)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Voucher[0].Code)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Voucher[0].ExpireDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Voucher[0].Discount)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Voucher) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Note)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExpireDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Discount)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.VoucherId">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.VoucherId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.VoucherId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<div class="align-middle">
+    <ul class="pagination">
+        @for (int b = 1; b <= Model.Count; b++)
+        {
+            <li class="page-item @(b == Model.Index ? "active" : "")">
+                <a asp-page="./Index" asp-route-Index="@b" class="page-link">@b</a>
+            </li>
+        }
+    </ul>
+</div>

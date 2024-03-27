@@ -21,7 +21,7 @@ namespace Assigment_Group_Project.Controllers
         }
 
         [HttpGet("GetById/{id}", Name = "Get Menu Item By ID")]
-        //[Authorize(Roles = "Admin,Staff,Customer")]
+        [Authorize(Roles = "Admin,Staff,Customer")]
         public IActionResult GetMenuItemById([FromRoute] int id)
         {
             try
@@ -59,7 +59,7 @@ namespace Assigment_Group_Project.Controllers
         }
 
         [HttpGet("SearchByName/{productName}", Name = "Search By Menu Item Name")]
-        //[Authorize(Roles = "Admin,Staff,Customer")]
+        [Authorize(Roles = "Admin,Staff,Customer")]
         public IActionResult SearchMenuItems([FromRoute] string productName, int? page = 1, int? quantity = 10)
         {
             try
@@ -78,6 +78,7 @@ namespace Assigment_Group_Project.Controllers
         }
 
         [HttpDelete("Delete/{id}", Name = "Delete Menu Item")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         public IActionResult DeleteMenuItem([FromRoute] long id)
         {
             try
@@ -100,6 +101,7 @@ namespace Assigment_Group_Project.Controllers
         }
 
         [HttpPatch("Update/{id}", Name = "Update Existing Menu Item")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         public IActionResult UpdateMenuItem([FromRoute] long id, string? name, float? price, long? menuID)
         {
             try
@@ -152,6 +154,7 @@ namespace Assigment_Group_Project.Controllers
         }
 
         [HttpPost("Add", Name = "Add New Menu Item")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         public IActionResult AddMenu(string name, float price, long categoryID)
         {
             try

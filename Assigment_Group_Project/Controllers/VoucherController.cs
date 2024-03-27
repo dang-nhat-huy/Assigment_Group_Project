@@ -2,6 +2,7 @@
 using AutoMapper;
 using BusinessObject.CustomMessage;
 using BusinessObject.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.IService;
 using Service.ReponseModel;
@@ -21,6 +22,7 @@ namespace Assigment_Group_Project.Controllers
             _mapper = mapper;
         }
         [HttpGet("GetAll", Name = "Get All Voucher")]
+        [Authorize(Roles = "Manager,Staff")]
         public IActionResult GetAllVoucher(int? page = 1, int? quantity = 10)
         {
             try
@@ -31,7 +33,7 @@ namespace Assigment_Group_Project.Controllers
                 {
                     return NotFound(ReturnMessage.EMPTY_LIST);
                 }
-                return Ok(ListVoucher);
+                return Ok(list);
             }
             catch (Exception ex)
             {
@@ -39,6 +41,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpGet("Get/{id}", Name = "Get Voucher By Id")]
+        [Authorize(Roles = "Manager,Staff")]
         public IActionResult GetVoucherById([FromRoute] long id)
         {
             try
@@ -57,6 +60,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpPost("Add", Name = "Add New Voucher")]
+        [Authorize(Roles = "Manager")]
         public IActionResult AddVoucher(VoucherViewModel Vvoucher)
         {
             var voucher = _mapper.Map<Voucher>(Vvoucher);
@@ -86,6 +90,7 @@ namespace Assigment_Group_Project.Controllers
             return Ok(voucher);
         }
         [HttpPatch("Update/{id}", Name = "Update Existing Voucher")]
+        [Authorize(Roles = "Manager")]
         public IActionResult UpdateVoucher([FromRoute] long id, VoucherViewModel Vvoucher)
         {
             try
@@ -134,6 +139,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpDelete("Delete/{id}", Name = "Delete Voucher")]
+        [Authorize(Roles = "Manager")]
         public IActionResult DeleteVoucher([FromRoute] long id)
         {
             try

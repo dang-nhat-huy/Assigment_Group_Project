@@ -2,6 +2,7 @@
 using AutoMapper;
 using BusinessObject.CustomMessage;
 using BusinessObject.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.IService;
 using Service.Service;
@@ -22,6 +23,7 @@ namespace Assigment_Group_Project.Controllers
             _userService = userService;
         }
         [HttpGet("GetAll", Name = "Get All Feedbacks")]
+        [Authorize(Roles = "Admin,Manager,Staff,Customer")]
         public IActionResult GetAllFeedbacks(int? page = 1, int? quantity = 10)
         {
             try
@@ -39,6 +41,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpGet("Get/{id}", Name = "Get Feedback By ID")]
+        [Authorize(Roles = "Admin,Manager,Staff")]
         public IActionResult GetCategoryById([FromRoute] long id)
         {
             try
@@ -56,6 +59,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpGet("GetByUser/{userId}", Name = "Get Feedback By User ID")]
+        [Authorize(Roles = "Manager,Staff,Customer")]
         public IActionResult GetCategoryByUserId([FromRoute] long userId)
         {
             try
@@ -73,6 +77,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpPost("Add", Name = "Add New Feedback")]
+        [Authorize(Roles = "Manager,Staff,Customer")]
         public IActionResult AddFeedback(FeedbackRequestVM request)
         {
             try
@@ -99,6 +104,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpPatch("Update/{id}", Name = "Update Existing Feedback")]
+        [Authorize(Roles = "Manager,Staff,Customer")]
         public IActionResult UpdateFeedback([FromRoute] long id, string fbContent)
         {
             try
@@ -130,6 +136,7 @@ namespace Assigment_Group_Project.Controllers
             }
         }
         [HttpDelete("Delete/{id}", Name = "Delete Feedback")]
+        [Authorize(Roles = "Manager,Staff")]
         public IActionResult DeleteFeedback([FromRoute] long id)
         {
             try

@@ -20,7 +20,7 @@ namespace Assigment_Group_Project.Controllers
         }
 
         [HttpGet("GetById/{id}", Name = "Get Services By ID")]
-        //[Authorize(Roles = "Admin,Staff,Customer")]
+        [Authorize(Roles = "Admin,Staff,Customer")]
         public IActionResult GetServicesById([FromRoute] int id)
         {
             try
@@ -58,6 +58,7 @@ namespace Assigment_Group_Project.Controllers
         }
 
         [HttpDelete("Delete/{id}", Name = "Delete Services")]
+        [Authorize(Roles = "Manager")]
         public IActionResult DeleteServices([FromRoute] long id)
         {
             try
@@ -80,6 +81,7 @@ namespace Assigment_Group_Project.Controllers
         }
 
         [HttpPost("AddService", Name = "Add New Services")]
+        [Authorize(Roles = "Manager")]
         public IActionResult AddServices(string name, float price)
         {
             try
@@ -121,6 +123,7 @@ namespace Assigment_Group_Project.Controllers
         }
 
         [HttpPatch("UpdateServices/{id}", Name = "Update Existing Services")]
+        [Authorize(Roles = "Manager")]
         public IActionResult UpdateServices([FromRoute] long id, ServiceRequestVM serviceRequestVM)
         {
             try
@@ -169,7 +172,7 @@ namespace Assigment_Group_Project.Controllers
         }
 
         [HttpGet("SearchByName/{serviceName}", Name = "Search By Services Name")]
-        //[Authorize(Roles = "Admin,Staff,Customer")]
+        [Authorize(Roles = "Admin,Staff,Customer")]
         public IActionResult SearchServices([FromRoute] string serviceName, int? page = 1, int? quantity = 10)
         {
             try
