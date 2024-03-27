@@ -5,29 +5,28 @@ using BusinessObject.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.IService;
-using Service.Service;
 
 namespace Assigment_Group_Project.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UserTaskController : ControllerBase
+    public class UserOrderController : Controller
     {
-        private readonly IUserTaskService _userTaskService;
+        private readonly IUserOrderService _userOrderService;
         private readonly IMapper _mapper;
-        public UserTaskController(IUserTaskService userTaskService, IMapper mapper)
+        public UserOrderController(IUserOrderService userOrderService, IMapper mapper)
         {
-            _userTaskService = userTaskService;
+            _userOrderService = userOrderService;
             _mapper = mapper;
         }
 
-        [HttpGet("GetAllUserTasks", Name = "Get All User Tasks")]
-        [Authorize(Roles = "Admin,Manager,Staff,Customer")]
-        public IActionResult GetAllUserTasks(int? page = 1, int? quantity = 10)
+        [HttpGet("GetAllUserOrders", Name = "Get All User Orders")]
+        //[Authorize(Roles = "Admin,Manager,Staff,Customer")]
+        public IActionResult GetAllUserOrders(int? page = 1, int? quantity = 10)
         {
             try
             {
-                var list = _userTaskService.GetAll(page, quantity);
+                var list = _userOrderService.GetAll(page, quantity);
                 if (!list.Any())
                 {
                     return NotFound(ReturnMessage.EMPTY_LIST);
@@ -40,20 +39,20 @@ namespace Assigment_Group_Project.Controllers
             }
         }
 
-        [HttpDelete("Delete/{id}", Name = "Delete User Task")]
-        [Authorize(Roles = "Manager")]
-        public IActionResult DeleteUserTask([FromRoute] long id)
+        [HttpDelete("Delete/{id}", Name = "Delete User Order")]
+        //[Authorize(Roles = "Manager")]
+        public IActionResult DeleteUserOrder([FromRoute] long id)
         {
             try
             {
-                var task = _userTaskService.GetById(id);
+                var task = _userOrderService.GetById(id);
                 if (task == null)
                 {
-                    return NotFound(ReturnMessage.USER_TASK_NOT_FOUND);
+                    return NotFound(ReturnMessage.USER_ORDER_NOT_FOUND);
                 }
 
-                _userTaskService.Delete(task);
-                _userTaskService.Save();
+                _userOrderService.Delete(task);
+                _userOrderService.Save();
                 return Ok(ReturnMessage.DELETE_SUCCESS);
             }
             catch (Exception ex)
@@ -62,9 +61,9 @@ namespace Assigment_Group_Project.Controllers
             }
         }
 
-        [HttpPost("AddUserTask", Name = "Add New User Task")]
-        [Authorize(Roles = "Manager")]
-        public IActionResult AddUserTask(UserTaskRequestVM userTask)
+        [HttpPost("AddUserOrder", Name = "Add New User Order")]
+        //[Authorize(Roles = "Manager")]
+        public IActionResult AddUserOrder(UserOrderRequestVM userOrder)
         {
             try
             {
@@ -73,9 +72,9 @@ namespace Assigment_Group_Project.Controllers
                     return BadRequest(ReturnMessage.BAD_REQUEST);
                 }
 
-                UserTask newTask = _mapper.Map<UserTask>(userTask);
-                _userTaskService.Add(newTask);
-                _userTaskService.Save();
+                UserOrder newOrder = _mapper.Map<UserOrder>(userOrder);
+                _userOrderService.Add(newOrder);
+                _userOrderService.Save();
 
                 return Ok(ReturnMessage.ADD_SUCCESS);
             }

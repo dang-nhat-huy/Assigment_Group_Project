@@ -83,4 +83,14 @@ namespace Assigment_Group_Project.ViewModel
         [Range(1, long.MaxValue)]
         public long? UserId { get; set; }
     }
+
+    public class UserOrderRequestVM
+    {
+        [Required]
+        [Range(1, long.MaxValue)]
+        public long? OrderId { get; set; }
+        [Required]
+        [Range(1, long.MaxValue)]
+        public long? UserId { get; set; }
+    }
 }

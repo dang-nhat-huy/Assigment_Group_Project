@@ -36,6 +36,7 @@ namespace BusinessObject.CustomMessage
         public const string VOUCHER_NOT_FOUND = "Voucher " + NOT_FOUND;
         public const string USER_NOT_FOUND = "User " + NOT_FOUND;
         public const string USER_TASK_NOT_FOUND = "User Task" + NOT_FOUND;
+        public const string USER_ORDER_NOT_FOUND = "User Order" + NOT_FOUND;
         public const string ORDER_DETAIL_NOT_FOUND = "Order Detail " + NOT_FOUND;
         public const string ROOM_NOT_FOUND = "Room " + NOT_FOUND;
 

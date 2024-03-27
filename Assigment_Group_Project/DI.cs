@@ -73,6 +73,7 @@ namespace Assigment_Group_Project
             builder.Services.AddScoped<IStatusUserRepository, StatusUserRepository>();
             builder.Services.AddScoped<IRoomRepository, RoomRepository>();
             builder.Services.AddScoped<IUserTaskRepository, UserTaskRepository>();
+            builder.Services.AddScoped<IUserOrderRepository, UserOrderRepository>();
             #endregion
 
             #region DI_Service
@@ -90,6 +91,8 @@ namespace Assigment_Group_Project
             builder.Services.AddScoped<IStatusUserService, StatusUserService>();
             builder.Services.AddScoped<IRoomService, RoomService>();
             builder.Services.AddScoped<IUserTaskService, UserTaskService>();
+            builder.Services.AddScoped<IUserOrderService, UserOrderService>();
+            
             #endregion
 
             builder.Services.AddEndpointsApiExplorer();
