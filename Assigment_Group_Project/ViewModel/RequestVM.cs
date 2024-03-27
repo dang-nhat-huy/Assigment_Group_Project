@@ -73,4 +73,14 @@ namespace Assigment_Group_Project.ViewModel
         [Range(1, int.MaxValue)]
         public int? Capacity { get; set; }
     }
+
+    public class UserTaskRequestVM
+    {
+        [Required]
+        [Range(1, long.MaxValue)]
+        public long? TaskId { get; set; }
+        [Required]
+        [Range(1, long.MaxValue)]
+        public long? UserId { get; set; }
+    }
 }

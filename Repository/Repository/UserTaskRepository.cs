@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Repository
 {
-    public class UserTaskTaskRepository : IUserTaskRepository
+    public class UserTaskRepository : IUserTaskRepository
     {
         public void Add(UserTask userTask) => UserTaskDAO.Instance.Add(userTask);
 
